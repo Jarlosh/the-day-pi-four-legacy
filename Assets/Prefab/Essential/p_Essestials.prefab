@@ -59,7 +59,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7170607553259926997}
   m_Layer: 0
-  m_Name: Essestials
+  m_Name: p_Essestials
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
