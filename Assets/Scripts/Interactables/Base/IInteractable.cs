@@ -1,0 +1,8 @@
+﻿namespace Interactables
+{
+    public interface IInteractable
+    {
+        bool CanInteract();
+        void Interact();
+    }
+}
