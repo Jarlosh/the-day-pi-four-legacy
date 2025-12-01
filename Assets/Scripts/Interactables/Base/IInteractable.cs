@@ -4,5 +4,6 @@
     {
         bool CanInteract();
         void Interact();
+        string GetDescriptionKey();
     }
 }

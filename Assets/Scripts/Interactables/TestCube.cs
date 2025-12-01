@@ -11,7 +11,12 @@ namespace Interactables
 
         public void Interact()
         {
-            Debug.Log("Interact");
+            Debug.Log($"Touched {name}");
+        }
+
+        public string GetDescriptionKey()
+        {
+            return "Interact";
         }
     }
 }

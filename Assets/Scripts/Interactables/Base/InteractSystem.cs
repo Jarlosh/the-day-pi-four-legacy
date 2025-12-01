@@ -1,4 +1,4 @@
-﻿using Tools;
+﻿using Tools.Structure;
 
 namespace Interactables
 {
