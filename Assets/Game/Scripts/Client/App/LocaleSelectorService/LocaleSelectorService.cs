@@ -66,10 +66,5 @@ namespace Game.Client.UI
 				Debug.Log("[LocaleSelectorService] SetLocale: Complete");
 			}
 		}
-
-		public void ChangeLocale()
-		{
-			throw new System.NotImplementedException();
-		}
 	}
 }

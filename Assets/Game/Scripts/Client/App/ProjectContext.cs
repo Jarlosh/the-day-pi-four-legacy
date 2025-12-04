@@ -1,8 +1,11 @@
 using Game.Client.UI;
 using Game.Core;
 using Game.Shared.Singletons;
-using NUnit.Framework;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using NUnit.Framework;
+#endif
 
 namespace Game.Client.App
 {
@@ -24,6 +27,8 @@ namespace Game.Client.App
         {
             ServiceLocator.Register<ILocaleSelectorService>(_localeSelectorService);
             ServiceLocator.Register<ITimeService>(_timeService);
+
+            Application.targetFrameRate = 120;
         }
 
         protected override void OnRelease()
@@ -37,8 +42,10 @@ namespace Game.Client.App
 
             if (prefabs.Length > 0)
             {
+#if UNITY_EDITOR
                 Assert.That(prefabs.Length == 1,
                     "Found multiple project context prefabs at resource path '{0}'", ProjectContextResourcePath);
+#endif
                 return (GameObject)prefabs[0];
             }
             
