@@ -43,7 +43,7 @@ namespace Game.Client.UI
 
         private void UpdateText()
         {
-            var text = _lastInteractable.GetDescriptionKey().LocalizeKey();
+            var text = _lastInteractable.GetDescriptionKey();
             var interactKey = "[E]"; // todo: faked for now
             _selectionLabel.text = $"{interactKey} {text}";
         }
