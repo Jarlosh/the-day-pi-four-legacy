@@ -2,13 +2,16 @@
     "name": "Game.Client",
     "rootNamespace": "Game.Client",
     "references": [
+        "GUID:fdd57787ea9e708429ad1efbe3afa37a",
         "GUID:b267845778cb7bd4e89a607ade24ebc2",
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
         "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:fdd57787ea9e708429ad1efbe3afa37a",
+        "GUID:84651a3751eca9349aac36a66bba901b",
         "GUID:eec0964c48f6f4e40bc3ec2257ccf8c5",
         "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:593a5b492d29ac6448b1ebf7f035ef33"
+        "GUID:593a5b492d29ac6448b1ebf7f035ef33",
+        "GUID:029c1c1b674aaae47a6841a0b89ad80e",
+        "GUID:1f64149c8a9c143478aad40aabb80ddb"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
