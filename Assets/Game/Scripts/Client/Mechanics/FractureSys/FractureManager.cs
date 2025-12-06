@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Game.Client.Fracture
+namespace Game.Client.FractureSystem
 {
     public class FractureManager: MonoBehaviour
     {

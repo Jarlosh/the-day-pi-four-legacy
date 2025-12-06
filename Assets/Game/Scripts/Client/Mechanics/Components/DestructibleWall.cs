@@ -8,9 +8,15 @@ namespace Game.Client
 		[Header("Settings")]
 		[SerializeField] private float _health = 100f;
 		[SerializeField] private float _damagePerHit = 50f;
+		[SerializeField] private Fracture _fracture;
 
 		public event Action OnDestroyed;
-		
+
+		private void Awake()
+		{
+			_fracture.callbackOptions.onCompleted.AddListener(DestroyWall);
+		}
+
 		public void TakeDamage(float damage)
 		{
 			_health -= _damagePerHit;
@@ -25,6 +31,7 @@ namespace Game.Client
 		{
 			OnDestroyed?.Invoke();
 			gameObject.SetActive(false);
+			Debug.Log("Destroyed wall");
 		}
 	}
 }

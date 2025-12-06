@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6029023166676150265}
+  - component: {fileID: 6472075261511420993}
   - component: {fileID: 550131822796622024}
   - component: {fileID: 7883743157516187162}
   - component: {fileID: 5814858229281041430}
@@ -36,6 +37,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6472075261511420993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3217094861885811653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bc95635d5ba415fb27763ab30ea74ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Client::Game.Client.DestructibleWall
+  _health: 100
+  _damagePerHit: 50
+  _fracture: {fileID: 1954279024892785431}
 --- !u!33 &550131822796622024
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -171,7 +187,7 @@ MonoBehaviour:
   refractureOptions:
     enableRefracturing: 0
     maxRefractureCount: 1
-    invokeCallbacks: 0
+    invokeCallbacks: 1
   callbackOptions:
     onFracture:
       m_PersistentCalls:
