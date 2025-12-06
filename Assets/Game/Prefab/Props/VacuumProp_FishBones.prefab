@@ -187,4 +187,4 @@ MonoBehaviour:
   _damage: 3
   _damageableLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 512

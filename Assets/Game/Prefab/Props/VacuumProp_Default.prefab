@@ -50,7 +50,7 @@ MonoBehaviour:
   _damage: 10
   _damageableLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 512
 --- !u!65 &1891881465504233486
 BoxCollider:
   m_ObjectHideFlags: 0

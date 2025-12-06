@@ -452,6 +452,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8469015526921812280}
+  - component: {fileID: 4593547378278891005}
   - component: {fileID: 537393612716186160}
   - component: {fileID: 8370099185292599192}
   - component: {fileID: 7806993719838426701}
@@ -478,6 +479,19 @@ Transform:
   - {fileID: 2518632289353719300}
   m_Father: {fileID: 3035459169100607082}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4593547378278891005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5228140700960799003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b7af58b103f43afb4957f1191f4e809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Client::Game.Client.HitHandler
+  _health: {fileID: 3687763121075182757}
 --- !u!33 &537393612716186160
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -994,6 +1008,7 @@ MonoBehaviour:
   _basePitch: 1
   _footstepInterval: 0.5
   _minSpeedForFootsteps: 0.1
+  _debugFootsteps: 0
 --- !u!1 &8598381240746485526
 GameObject:
   m_ObjectHideFlags: 0

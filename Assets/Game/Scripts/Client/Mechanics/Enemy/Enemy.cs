@@ -9,7 +9,7 @@ namespace Game.Client
 
 		[Header("Settings")] [SerializeField] private float _maxHealth = 50f;
 
-		protected bool IsDead { get; private set; }
+		public bool IsDead { get; private set; }
 
 		protected virtual void Awake()
 		{

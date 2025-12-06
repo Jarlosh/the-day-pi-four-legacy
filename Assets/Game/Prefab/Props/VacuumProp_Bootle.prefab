@@ -76,7 +76,7 @@ MonoBehaviour:
   _damage: 10
   _damageableLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 512
 --- !u!1 &7651274761930389444
 GameObject:
   m_ObjectHideFlags: 0

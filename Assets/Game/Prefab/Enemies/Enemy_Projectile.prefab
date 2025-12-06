@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6611217746119540844
+--- !u!1 &2480619100262078877
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3971267383785896697}
-  - component: {fileID: 3684296844366107613}
-  - component: {fileID: 9146812388600683698}
-  - component: {fileID: 7544738950327008490}
-  m_Layer: 0
-  m_Name: SM_Apple
+  - component: {fileID: 2649932896877524558}
+  - component: {fileID: 4667752892398747250}
+  - component: {fileID: 5581349483810096110}
+  - component: {fileID: 4356626609725487107}
+  m_Layer: 9
+  m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3971267383785896697
+--- !u!4 &2649932896877524558
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6611217746119540844}
+  m_GameObject: {fileID: 2480619100262078877}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8807657729538749578}
+  m_Father: {fileID: 2638486865768136816}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3684296844366107613
+--- !u!33 &4667752892398747250
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6611217746119540844}
-  m_Mesh: {fileID: -8742401282597279494, guid: addc3ea984ebbd8459533cfd6a2cf6e2, type: 3}
---- !u!23 &9146812388600683698
+  m_GameObject: {fileID: 2480619100262078877}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &5581349483810096110
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6611217746119540844}
+  m_GameObject: {fileID: 2480619100262078877}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 0c343503cee023b42a5198ad8579dc4a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -90,13 +90,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &7544738950327008490
+--- !u!135 &4356626609725487107
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6611217746119540844}
+  m_GameObject: {fileID: 2480619100262078877}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -109,9 +109,9 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.05865829
-  m_Center: {x: -0.00061899424, y: -0.00071001425, z: 0.05836341}
---- !u!1 &7631412750989994630
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &4049052576797291838
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,39 +119,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8807657729538749578}
-  - component: {fileID: 7560090739883876600}
-  - component: {fileID: 3375003973119936591}
-  m_Layer: 0
-  m_Name: VacuumProp_Apple
+  - component: {fileID: 2638486865768136816}
+  - component: {fileID: 746470601567810430}
+  - component: {fileID: 7755521589115539343}
+  m_Layer: 9
+  m_Name: Enemy_Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8807657729538749578
+--- !u!4 &2638486865768136816
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7631412750989994630}
+  m_GameObject: {fileID: 4049052576797291838}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3971267383785896697}
+  - {fileID: 2649932896877524558}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &7560090739883876600
+--- !u!54 &746470601567810430
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7631412750989994630}
+  m_GameObject: {fileID: 4049052576797291838}
   serializedVersion: 5
   m_Mass: 1
   m_LinearDamping: 0
@@ -167,24 +167,25 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3375003973119936591
+--- !u!114 &7755521589115539343
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7631412750989994630}
+  m_GameObject: {fileID: 4049052576797291838}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec223672765c8e74e955d878cafdb9df, type: 3}
+  m_Script: {fileID: 11500000, guid: faf6850e3b53437dabc1f6547b0a88b0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Game.Client::Game.Client.VacuumedObject
-  _damage: 5
-  _damageableLayers:
+  m_EditorClassIdentifier: Game.Client::Game.Client.EnemyProjectile
+  _damage: 10
+  _playerLayerMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 64
+  _collisionRadius: 0.25
