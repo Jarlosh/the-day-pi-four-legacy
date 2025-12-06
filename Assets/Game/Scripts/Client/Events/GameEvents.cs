@@ -65,6 +65,9 @@
 
 	public record GameMusicStateChangedEvent(GameMusicState NewState)
 	{
-		
+	}
+	
+	public record PlayerJumpedEvent()
+	{
 	}
 }

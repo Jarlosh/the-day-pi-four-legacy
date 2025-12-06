@@ -413,6 +413,8 @@ namespace Game.Client
 		private void Jump()
 		{
 			_exitingSlope = true;
+			
+			EventBus.Instance.Publish(new PlayerJumpedEvent());
 
 			Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, 0f, Rigidbody.linearVelocity.z);
 
