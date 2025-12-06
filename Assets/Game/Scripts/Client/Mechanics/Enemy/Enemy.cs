@@ -2,7 +2,7 @@
 
 namespace Game.Client
 {
-	public class Enemy: MonoBehaviour
+	public abstract class Enemy: MonoBehaviour
 	{
 		[Header("References")] [SerializeField]
 		private Health _health;
