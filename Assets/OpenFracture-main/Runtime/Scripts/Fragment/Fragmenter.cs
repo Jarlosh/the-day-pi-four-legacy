@@ -10,6 +10,8 @@ using UnityEditor;
 
 public static class Fragmenter
 {
+    public static event Action<GameObject> OnFragmentCreated;
+    
     /// <summary>
     /// Generates the mesh fragments based on the provided options. The generated fragment objects are
     /// stored as children of `fragmentParent`
@@ -275,6 +277,7 @@ public static class Fragmenter
             }
             #endif
 
+            OnFragmentCreated?.Invoke(fragment);
             i++;
         }
     }

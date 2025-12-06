@@ -29,7 +29,7 @@ namespace Game.Client
         [SerializeField] private float _shootForce = 50f;
         [SerializeField] private float _shootInterval = 0.2f; // Интервал между выстрелами
         [SerializeField] private float _collisionReenableDelay = 0.5f; // Задержка перед включением коллизий
-        
+        [SerializeField] private float _referenceMass = 1;
         private List<VacuumedObject> _vacuumedObjects = new List<VacuumedObject>();
         private List<VacuumedObject> _currentlyVacuuming = new List<VacuumedObject>(); // Объекты, которые сейчас всасываются
         
@@ -233,7 +233,10 @@ namespace Game.Client
                     
                     if (obj != null)
                     {
-                        obj.ShootFromPoint(_holdPoint.position, _camera.transform.forward * _shootForce, _collisionReenableDelay, token).Forget();
+                        var rb = obj.GetComponent<Rigidbody>();
+                        var mass = rb != null ? rb.mass : 1;
+                        var force = (mass / _referenceMass) * _shootForce;
+                        obj.ShootFromPoint(_holdPoint.position, _camera.transform.forward * force, _collisionReenableDelay, token).Forget();
                         
                         EventBus.Instance.Publish(new ShootEvent());
 

@@ -30,6 +30,11 @@ namespace Game.Client
 		public bool IsVacuumed => _isVacuumed;
 		public bool HasReachedTarget => _hasReachedTarget;
 
+		public void Init(LayerMask layer)
+		{
+			_damageableLayers = layer;
+		}
+		
 		private void Awake()
 		{
 			_rigidbody = GetComponent<Rigidbody>();
