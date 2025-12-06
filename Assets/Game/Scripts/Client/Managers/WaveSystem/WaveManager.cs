@@ -135,7 +135,7 @@ namespace Game.Client
 
 					if (i < waves.Count - 1)
 					{
-						await UniTask.Delay(TimeSpan.FromSeconds(_betweenWavesDelay), cancellationToken: token);
+						await CountdownBetweenWave(token);
 					}
 				}
 
@@ -153,6 +153,21 @@ namespace Game.Client
 		private async UniTask CountdownBeforeWave(CancellationToken token)
 		{
 			var countdownSeconds = Mathf.CeilToInt(_countdownDuration);
+			
+			EventBus.Instance.Publish(new GameMusicStateChangedEvent(GameMusicState.StateCalm));
+				
+			for (var i = countdownSeconds; i > 0; i--)
+			{
+				EventBus.Instance.Publish(new CountdownEvent(i));
+				await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
+			}
+		}
+
+		private async UniTask CountdownBetweenWave(CancellationToken token)
+		{
+			var countdownSeconds = Mathf.CeilToInt(_betweenWavesDelay);
+			
+			EventBus.Instance.Publish(new GameMusicStateChangedEvent(GameMusicState.StateCalm));
 
 			for (var i = countdownSeconds; i > 0; i--)
 			{
@@ -170,6 +185,7 @@ namespace Game.Client
 			}
 
 			int enemiesSpawned = 0;
+			EventBus.Instance.Publish(new GameMusicStateChangedEvent(GameMusicState.StateBattle));
 
 			while (enemiesSpawned < waveData.MaxEnemiesInWave && !token.IsCancellationRequested)
 			{

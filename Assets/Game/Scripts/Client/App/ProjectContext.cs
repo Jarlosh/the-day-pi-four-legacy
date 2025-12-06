@@ -15,6 +15,7 @@ namespace Game.Client.App
 
         [SerializeField] private LocaleSelectorService _localeSelectorService;
         [SerializeField] private TimeService _timeService;
+        [SerializeField] private MusicManager _musicManager;
 
         [RuntimeInitializeOnLoadMethod]
         private static void OnLoadMethod()
@@ -28,6 +29,8 @@ namespace Game.Client.App
             ServiceLocator.Register<ILocaleSelectorService>(_localeSelectorService);
             ServiceLocator.Register<ITimeService>(_timeService);
 
+            ServiceLocator.Register(_musicManager);
+            
             Application.targetFrameRate = 120;
         }
 

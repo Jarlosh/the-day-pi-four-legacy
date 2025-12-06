@@ -16,7 +16,7 @@ namespace Game.Client
 
 		[SerializeField] private bool _canDie = true;
 
-		private float _currentHealth;
+		private float _currentHealth = 100f;
 
 		public float MaxHealth => _maxHealth;
 		public float CurrentHealth => _currentHealth;

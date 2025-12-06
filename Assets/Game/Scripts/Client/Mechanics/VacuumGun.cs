@@ -130,7 +130,6 @@ namespace Game.Client
             }
             catch (System.OperationCanceledException)
             {
-                // Отменяем всасывание для объектов, которые ещё не засосались
                 CancelCurrentVacuuming();
             }
         }

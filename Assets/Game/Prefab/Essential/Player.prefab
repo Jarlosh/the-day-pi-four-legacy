@@ -546,7 +546,7 @@ MonoBehaviour:
   <Freeze>k__BackingField: 0
   <Unlimited>k__BackingField: 0
   <Restricted>k__BackingField: 0
-  <JumpForce>k__BackingField: 12
+  <JumpForce>k__BackingField: 10
   <JumpCooldown>k__BackingField: 0.25
   <AirMultiplier>k__BackingField: 0.4
   <CrouchSpeed>k__BackingField: 3.5
@@ -796,7 +796,7 @@ MonoBehaviour:
   _vacuumStartClip: {fileID: 8300000, guid: d279b03cd787d184a843643caf3e42fd, type: 3}
   _vacuumStartVolume: 1
   _vacuumLoopClip: {fileID: 8300000, guid: 5b491e6942be23f46987e6861f77c8ed, type: 3}
-  _vacuumLoopVolume: 1
+  _vacuumLoopVolume: 1.5
   _vacuumSuccessClip: {fileID: 8300000, guid: d440094f240712e44893acecf3123ef9, type: 3}
   _vacuumSuccessVolume: 1
 --- !u!1 &8598381240746485526

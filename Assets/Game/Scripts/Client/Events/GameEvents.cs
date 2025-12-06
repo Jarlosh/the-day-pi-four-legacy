@@ -62,4 +62,9 @@
 	public record ShootEvent()
 	{
 	}
+
+	public record GameMusicStateChangedEvent(GameMusicState NewState)
+	{
+		
+	}
 }
