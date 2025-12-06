@@ -15,10 +15,13 @@ namespace Game.Client
 		[SerializeField] private float _rotationSpeed = 5f;
 		[SerializeField] private float _stoppingDistance = 2f; // Дистанция остановки от игрока
 		[SerializeField] private float _updatePathInterval = 0.5f; // Как часто обновлять путь
-        
+		[SerializeField] private EnemyAnimator _animator;
+		[SerializeField] private float _stunDuration;
+		
 		private NavMeshAgent _navAgent;
 		private float _lastPathUpdateTime;
-        
+		private float _lastStunStart = float.MinValue;
+
 		protected override void Awake()
 		{
 			base.Awake();
@@ -53,8 +56,16 @@ namespace Game.Client
             
 			LookAtPlayer();
 			UpdateDestination();
+			// _animator.Set
 		}
-        
+
+		protected override void OnDamaged(float damage, float finalHealth)
+		{
+			base.OnDamaged(damage, finalHealth);
+			_navAgent.isStopped = true;
+			_lastStunStart = Time.time;
+		}
+
 		private void FindPlayer()
 		{
 			var playerController = FindFirstObjectByType<PlayerInput>();
@@ -107,6 +118,15 @@ namespace Game.Client
         
 		private void UpdateDestination()
 		{
+			if (_lastStunStart + _stunDuration > Time.time)
+			{
+				return;
+			}
+			else
+			{
+				_navAgent.isStopped = false;
+			}
+
 			if (Time.time - _lastPathUpdateTime >= _updatePathInterval)
 			{
 				if (_navAgent.isOnNavMesh)
@@ -115,12 +135,13 @@ namespace Game.Client
 				}
 				_lastPathUpdateTime = Time.time;
 			}
+
+			// _animator.IsWalking = !_navAgent.isStopped;
 		}
         
 		protected override void OnDeath()
 		{
 			base.OnDeath();
-            
 			if (_navAgent != null)
 			{
 				_navAgent.isStopped = true;

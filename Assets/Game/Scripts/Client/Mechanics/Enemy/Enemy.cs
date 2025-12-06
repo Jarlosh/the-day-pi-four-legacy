@@ -22,7 +22,12 @@ namespace Game.Client
 			{
 				_health.SetMaxHealth(_maxHealth);
 				_health.OnDeath += HandleDeath;
+				_health.OnDamageTaken += OnDamaged;
 			}
+		}
+
+		protected virtual void OnDamaged(float damage, float finalHealth)
+		{
 		}
 
 		protected virtual void OnDestroy()
@@ -30,6 +35,7 @@ namespace Game.Client
 			if (_health != null)
 			{
 				_health.OnDeath -= HandleDeath;
+				_health.OnDamageTaken -= OnDamaged;
 			}
 		}
 
