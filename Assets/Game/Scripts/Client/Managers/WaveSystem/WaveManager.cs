@@ -52,7 +52,7 @@ namespace Game.Client
 
 		private void Awake()
 		{
-			ServiceLocator.Register<WaveManager>(this);
+			ServiceLocator.Register(this);
 			
 			if (_playerHealth == null)
 			{

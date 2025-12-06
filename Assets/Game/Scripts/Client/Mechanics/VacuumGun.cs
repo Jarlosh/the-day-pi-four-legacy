@@ -109,6 +109,8 @@ namespace Game.Client
         {
             CancelVacuum();
             
+            EventBus.Instance.Publish(new VacuumStartedEvent());
+            
             _vacuumCts = new CancellationTokenSource();
             var token = _vacuumCts.Token;
             
@@ -136,6 +138,8 @@ namespace Game.Client
         private void CancelVacuum()
         {
             AsyncUtils.TryCancelDisposeNull(ref _vacuumCts);
+         
+            EventBus.Instance.Publish(new VacuumStoppedEvent());
             
             CancelCurrentVacuuming();
         }
@@ -208,6 +212,8 @@ namespace Game.Client
                     obj.SuckIntoPoint(_holdPoint.position);
                     _currentlyVacuuming.RemoveAt(i);
                     _vacuumedObjects.Add(obj);
+                    
+                    EventBus.Instance.Publish(new VacuumSuccessEvent());
                 }
             }
         }
@@ -229,6 +235,9 @@ namespace Game.Client
                     if (obj != null)
                     {
                         obj.ShootFromPoint(_holdPoint.position, _camera.transform.forward * _shootForce, _collisionReenableDelay, token).Forget();
+                        
+                        EventBus.Instance.Publish(new ShootEvent());
+
                     }
                     
                     await UniTask.Delay(TimeSpan.FromSeconds(_shootInterval), cancellationToken: token);

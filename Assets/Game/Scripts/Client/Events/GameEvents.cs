@@ -46,4 +46,20 @@
 	public record StyleMeterChangedEvent(float MeterValue, int CurrentRankIndex)
 	{
 	}
+	
+	public record VacuumStartedEvent()
+	{
+	}
+    
+	public record VacuumStoppedEvent()
+	{
+	}
+    
+	public record VacuumSuccessEvent()
+	{
+	}
+    
+	public record ShootEvent()
+	{
+	}
 }
