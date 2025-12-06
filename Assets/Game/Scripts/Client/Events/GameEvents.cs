@@ -70,4 +70,16 @@
 	public record PlayerJumpedEvent()
 	{
 	}
+	
+	public record TutorialSequenceStartedEvent()
+	{
+	}
+    
+	public record TutorialStepCompletedEvent(int StepIndex, TutorialStep Step)
+	{
+	}
+    
+	public record TutorialSequenceCompletedEvent()
+	{
+	}
 }

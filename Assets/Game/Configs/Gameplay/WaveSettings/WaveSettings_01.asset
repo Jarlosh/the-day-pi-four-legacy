@@ -20,7 +20,7 @@ MonoBehaviour:
     <SpawnInterval>k__BackingField: 0.5
   - <EnemyPrefabs>k__BackingField:
     - {fileID: 5848876718710476701, guid: 12e4eaba82cc13240adecdb115753fd2, type: 3}
-    <MaxEnemiesInWave>k__BackingField: 15
+    <MaxEnemiesInWave>k__BackingField: 10
     <MaxSpawnsPerFrame>k__BackingField: 2
     <SpawnInterval>k__BackingField: 0.5
   - <EnemyPrefabs>k__BackingField:

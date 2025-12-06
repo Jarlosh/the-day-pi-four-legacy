@@ -56,6 +56,14 @@ namespace Game.Client
 			{
 				health.TakeDamage(_damage);
 				_canDealDamage = false;
+				return;
+			}
+			
+			var hitHandler = collision.gameObject.GetComponent<IHitHandler>();
+			if (hitHandler != null)
+			{
+				hitHandler.TakeDamage(_damage);
+				_canDealDamage = false;
 			}
 		}
 
@@ -65,7 +73,7 @@ namespace Game.Client
 			_attractionDistance = attractionDistance;
 			_isVacuumed = true;
 			_hasReachedTarget = false;
-			_canDealDamage = false; // При всасывании не наносит урон
+			_canDealDamage = false;
 
 			_vacuumCts = CancellationTokenSource.CreateLinkedTokenSource(token);
 
