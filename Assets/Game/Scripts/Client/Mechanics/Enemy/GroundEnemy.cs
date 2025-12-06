@@ -62,8 +62,11 @@ namespace Game.Client
 		protected override void OnDamaged(float damage, float finalHealth)
 		{
 			base.OnDamaged(damage, finalHealth);
-			_navAgent.isStopped = true;
-			_lastStunStart = Time.time;
+			if(finalHealth > 0)
+			{
+				_navAgent.isStopped = true;
+				_lastStunStart = Time.time;
+			}
 		}
 
 		private void FindPlayer()
