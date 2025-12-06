@@ -141,6 +141,8 @@ namespace Game.Client
             {
                 _currentState = stateEvent.NewState;
                 _stateChanged = true;
+                
+                StartMusicLoop(default).Forget();
             }
         }
 

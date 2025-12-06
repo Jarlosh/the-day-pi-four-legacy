@@ -104,7 +104,7 @@ namespace Game.Client
         
         private void HandleFootsteps()
         {
-            if (!_characterMovement.Grounded)
+            if (!_characterMovement.Grounded && !_characterMovement.WallRunning)
             {
                 _footstepTimer = 0f;
                 return;
