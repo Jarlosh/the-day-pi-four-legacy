@@ -24,23 +24,24 @@ namespace Game.Client
 
         [SerializeField] private List<AudioClip> _state2MusicList = new List<AudioClip>();
 
-        [Header("Settings")] [SerializeField] private float _fadeDuration = 2f; // Длительность плавного перехода при смене стейта
-        [SerializeField] private float _maxVolume = 1f; // Максимальная громкость
+        [Header("Settings")] [SerializeField] private float _fadeDuration = 2f;
+        [SerializeField] private float _maxVolume = 1f;
         [SerializeField] private GameMusicState _initialState = GameMusicState.StateCalm;
+        [SerializeField] private bool _preloadAudio = true; // Предзагрузка аудио данных
 
         private GameMusicState _currentState;
         private AudioClip _currentClip;
-        private AudioSource _activeSource; // Активный источник
-        private AudioSource _inactiveSource; // Неактивный источник (для кроссфейда)
+        private AudioSource _activeSource;
+        private AudioSource _inactiveSource;
         private CancellationTokenSource _musicCts;
         private bool _isFading = false;
-        private bool _stateChanged = false; // Флаг смены стейта
+        private bool _stateChanged = false;
+        private bool _isDestroyed = false;
 
         public GameMusicState CurrentState => _currentState;
 
         private void Awake()
         {
-            // Создаём AudioSource, если не назначены
             if (_audioSource1 == null)
             {
                 _audioSource1 = gameObject.AddComponent<AudioSource>();
@@ -62,11 +63,18 @@ namespace Game.Client
             _inactiveSource = _audioSource2;
 
             _currentState = _initialState;
+
+            // Предзагружаем все аудио клипы
+            if (_preloadAudio)
+            {
+                PreloadAllAudioClips();
+            }
         }
 
         private void Start()
         {
-            StartMusicLoop().Forget();
+            _musicCts = new CancellationTokenSource();
+            StartMusicLoop(_musicCts.Token).Forget();
         }
 
         private void OnEnable()
@@ -77,59 +85,100 @@ namespace Game.Client
         private void OnDisable()
         {
             EventBus.Instance.Unsubscribe<GameMusicStateChangedEvent>(OnStateChanged);
-            _musicCts?.Cancel();
+            StopMusic();
         }
 
         private void OnDestroy()
         {
-            _musicCts?.Cancel();
-            _musicCts?.Dispose();
+            _isDestroyed = true;
+            StopMusic();
+        }
+
+        private void StopMusic()
+        {
+            if (_musicCts != null)
+            {
+                _musicCts.Cancel();
+                _musicCts.Dispose();
+                _musicCts = null;
+            }
+
+            if (_activeSource != null)
+            {
+                _activeSource.Stop();
+            }
+
+            if (_inactiveSource != null)
+            {
+                _inactiveSource.Stop();
+            }
+        }
+
+        private void PreloadAllAudioClips()
+        {
+            // Предзагружаем все аудио клипы из обоих списков
+            var allClips = new List<AudioClip>();
+            allClips.AddRange(_state1MusicList);
+            allClips.AddRange(_state2MusicList);
+
+            foreach (var clip in allClips)
+            {
+                if (clip != null && !clip.preloadAudioData)
+                {
+                    clip.LoadAudioData();
+                }
+            }
         }
 
         private void OnStateChanged(GameMusicStateChangedEvent stateEvent)
         {
+            if (_isDestroyed)
+                return;
+
             if (_currentState != stateEvent.NewState)
             {
                 _currentState = stateEvent.NewState;
                 _stateChanged = true;
-
-                StartMusicLoop().Forget();
             }
         }
 
-        private async UniTaskVoid StartMusicLoop()
+        private async UniTaskVoid StartMusicLoop(CancellationToken token)
         {
-            _musicCts = new CancellationTokenSource();
-            var token = _musicCts.Token;
-
             try
             {
+                // Запускаем первый трек
                 await PlayNextTrack(token, false);
 
-                while (!token.IsCancellationRequested)
+                while (!token.IsCancellationRequested && !_isDestroyed)
                 {
-                    while (_activeSource != null && _activeSource.isPlaying && !token.IsCancellationRequested)
+                    // Ждём, пока трек закончится
+                    while (_activeSource != null && _activeSource.isPlaying && !token.IsCancellationRequested && !_isDestroyed)
                     {
-                        await UniTask.Yield(token);
+                        await UniTask.Yield(PlayerLoopTiming.Update, token);
                     }
 
-                    if (token.IsCancellationRequested)
+                    if (token.IsCancellationRequested || _isDestroyed)
                         break;
 
+                    // Проверяем, изменился ли стейт
                     bool needFade = _stateChanged;
                     _stateChanged = false;
 
+                    // Выбираем и воспроизводим следующий трек
                     await PlayNextTrack(token, needFade);
                 }
             }
             catch (OperationCanceledException)
             {
-                // Отменено
+                // Отменено - это нормально
             }
         }
 
         private async UniTask PlayNextTrack(CancellationToken token, bool useFade)
         {
+            if (_isDestroyed || token.IsCancellationRequested)
+                return;
+
             var musicList = GetCurrentMusicList();
 
             if (musicList == null || musicList.Count == 0)
@@ -138,32 +187,19 @@ namespace Game.Client
                 return;
             }
 
-            AudioClip nextClip = null;
-
-            if (musicList.Count == 1)
-            {
-                nextClip = musicList[0];
-            }
-            else
-            {
-                var availableClips = new List<AudioClip>(musicList);
-                if (_currentClip != null && availableClips.Contains(_currentClip))
-                {
-                    availableClips.Remove(_currentClip);
-                }
-
-                if (availableClips.Count > 0)
-                {
-                    nextClip = availableClips[UnityEngine.Random.Range(0, availableClips.Count)];
-                }
-                else
-                {
-                    nextClip = musicList[UnityEngine.Random.Range(0, musicList.Count)];
-                }
-            }
+            // Выбираем случайный трек
+            AudioClip nextClip = SelectNextClip(musicList);
 
             if (nextClip == null)
                 return;
+
+            // Предзагружаем аудио данные, если ещё не загружены
+            if (!nextClip.preloadAudioData)
+            {
+                nextClip.LoadAudioData();
+                // Даём кадр на загрузку
+                await UniTask.Yield(PlayerLoopTiming.Update, token);
+            }
 
             _currentClip = nextClip;
 
@@ -177,61 +213,106 @@ namespace Game.Client
             }
         }
 
+        private AudioClip SelectNextClip(List<AudioClip> musicList)
+        {
+            if (musicList.Count == 0)
+                return null;
+
+            if (musicList.Count == 1)
+            {
+                return musicList[0];
+            }
+
+            // Выбираем случайный трек, отличный от текущего
+            var availableClips = new List<AudioClip>(musicList);
+            if (_currentClip != null && availableClips.Contains(_currentClip))
+            {
+                availableClips.Remove(_currentClip);
+            }
+
+            if (availableClips.Count > 0)
+            {
+                return availableClips[UnityEngine.Random.Range(0, availableClips.Count)];
+            }
+
+            return musicList[UnityEngine.Random.Range(0, musicList.Count)];
+        }
+
         private async UniTask SwitchToNextTrack(AudioClip nextClip, CancellationToken token)
         {
-            if (_activeSource == null)
-            {
+            if (_isDestroyed || _activeSource == null || token.IsCancellationRequested)
                 return;
-            }
-            
+
+            // Просто переключаемся на новый трек без fade
             _activeSource.clip = nextClip;
             _activeSource.volume = _maxVolume;
             _activeSource.Play();
 
-            await UniTask.Yield(token);
+            await UniTask.Yield(PlayerLoopTiming.Update, token);
         }
 
         private async UniTask FadeToNextTrack(AudioClip nextClip, CancellationToken token)
         {
-            if (_isFading)
+            if (_isFading || _isDestroyed || token.IsCancellationRequested)
+                return;
+
+            if (_activeSource == null || _inactiveSource == null)
                 return;
 
             _isFading = true;
 
-            (_activeSource, _inactiveSource) = (_inactiveSource, _activeSource);
-
-            if (_activeSource == null)
+            try
             {
-                return;
+                // Меняем местами активный и неактивный источники
+                var temp = _activeSource;
+                _activeSource = _inactiveSource;
+                _inactiveSource = temp;
+
+                // Настраиваем новый активный источник
+                _activeSource.clip = nextClip;
+                _activeSource.volume = 0f;
+                _activeSource.Play();
+
+                // Плавно переключаем громкость между источниками
+                float elapsed = 0f;
+                float inactiveStartVolume = _inactiveSource.volume;
+
+                while (elapsed < _fadeDuration && !token.IsCancellationRequested && !_isDestroyed)
+                {
+                    elapsed += Time.deltaTime;
+                    float t = elapsed / _fadeDuration;
+
+                    if (_activeSource != null)
+                    {
+                        _activeSource.volume = Mathf.Lerp(0f, _maxVolume, t);
+                    }
+
+                    if (_inactiveSource != null)
+                    {
+                        _inactiveSource.volume = Mathf.Lerp(inactiveStartVolume, 0f, t);
+                    }
+
+                    await UniTask.Yield(PlayerLoopTiming.Update, token);
+                }
+
+                if (!token.IsCancellationRequested && !_isDestroyed)
+                {
+                    if (_activeSource != null)
+                    {
+                        _activeSource.volume = _maxVolume;
+                    }
+
+                    if (_inactiveSource != null)
+                    {
+                        _inactiveSource.volume = 0f;
+                        _inactiveSource.Stop();
+                    }
+                }
             }
-            
-            _activeSource.clip = nextClip;
-            _activeSource.volume = 0f;
-            _activeSource.Play();
-
-            float elapsed = 0f;
-            float inactiveStartVolume = _inactiveSource.volume;
-
-            while (elapsed < _fadeDuration && !token.IsCancellationRequested)
+            finally
             {
-                elapsed += Time.deltaTime;
-                float t = elapsed / _fadeDuration;
-
-                _activeSource.volume = Mathf.Lerp(0f, _maxVolume, t);
-
-                _inactiveSource.volume = Mathf.Lerp(inactiveStartVolume, 0f, t);
-
-                await UniTask.Yield(token);
+                _isFading = false;
             }
-
-            if (!token.IsCancellationRequested)
-            {
-                _activeSource.volume = _maxVolume;
-                _inactiveSource.volume = 0f;
-                _inactiveSource.Stop();
-            }
-
-            _isFading = false;
         }
 
         private List<AudioClip> GetCurrentMusicList()
@@ -246,11 +327,13 @@ namespace Game.Client
 
         public void ChangeState(GameMusicState newState)
         {
+            if (_isDestroyed)
+                return;
+
             if (_currentState != newState)
             {
                 _currentState = newState;
                 _stateChanged = true;
-                
                 EventBus.Instance.Publish(new GameMusicStateChangedEvent(newState));
             }
         }
