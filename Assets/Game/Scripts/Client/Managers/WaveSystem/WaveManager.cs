@@ -71,12 +71,6 @@ namespace Game.Client
 		
 		private void Start()
 		{
-			if (_waveSettings == null || _waveSettings.Waves.Count == 0)
-			{
-				Debug.LogError("WaveSettings не настроен или нет волн!");
-				return;
-			}
-
 			StartGame().Forget();
 		}
 
@@ -96,8 +90,14 @@ namespace Game.Client
 			EndGame(false);
 		}
 
-		private async UniTaskVoid StartGame()
+		public async UniTaskVoid StartGame()
 		{
+			if (_waveSettings == null || _waveSettings.Waves.Count == 0)
+			{
+				Debug.LogError("WaveSettings не настроен или нет волн!");
+				return;
+			}
+			
 			_isGameActive = true;
 			_waveCts = new CancellationTokenSource();
 			var token = _waveCts.Token;

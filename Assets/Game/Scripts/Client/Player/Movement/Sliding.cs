@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Game.Client
 {
-	public class Sliding: MonoBehaviour
+	public class Sliding: ManagedBehaviour
 	{
 		[field: SerializeField] private Rigidbody Rigidbody { get; set; }
 		[field: SerializeField] private CameraController CameraController { get; set; }
@@ -35,13 +35,13 @@ namespace Game.Client
 
 			_startYScale = PlayerObj.localScale.y;
 		}
-
-		private void Update()
+		
+		public override void ManagedUpdate()
 		{
 			HandleInput();
 		}
 
-		private void FixedUpdate()
+		public override void ManagedFixedUpdate()
 		{
 			if (_characterMovement.Sliding)
 			{

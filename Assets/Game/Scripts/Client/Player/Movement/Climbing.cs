@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace Game.Client
 {
-	public class Climbing: MonoBehaviour
+	public class Climbing: ManagedBehaviour
 	{
 		//[field: SerializeField] private LedgeGrabbing LedgeGrabbingBehaviour { get; set; }
 		[field: SerializeField] private Rigidbody Rigidbody { get; set; }
@@ -60,7 +60,7 @@ namespace Game.Client
 			_characterMovement = GetComponent<CharacterMovement>();
 		}
 
-		private void Update()
+		public override void ManagedUpdate()
 		{
 			WallCheck();
 			UpdateState();

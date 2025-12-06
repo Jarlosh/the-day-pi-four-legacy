@@ -3,82 +3,82 @@ using UnityEngine.InputSystem;
 
 namespace Game.Client
 {
-    public class PlayerInteractionController: MonoBehaviour
-    {
-        [SerializeField] private Camera _camera;
-        [SerializeField] private InputActionReference _inputAction;
-        [SerializeField] private float _castDistance = 5;
-        [SerializeField] private LayerMask _mask;
-        
-        private GameObject _lastHoveredObject;
-        private IInteractable _lastInteractable;
+	public class PlayerInteractionController: ManagedBehaviour
+	{
+		[SerializeField] private Camera _camera;
+		[SerializeField] private InputActionReference _inputAction;
+		[SerializeField] private float _castDistance = 5;
+		[SerializeField] private LayerMask _mask;
 
-        private void Awake()
-        {
-            _inputAction.action.performed += OnInputPerformed;
-        }
+		private GameObject _lastHoveredObject;
+		private IInteractable _lastInteractable;
 
-        private void OnDestroy()
-        {
-            _inputAction.action.performed -= OnInputPerformed;
-        }
+		private void Awake()
+		{
+			_inputAction.action.performed += OnInputPerformed;
+		}
 
-        private void OnInputPerformed(InputAction.CallbackContext _)
-        {
-            TryInteract();
-        }
+		private void OnDestroy()
+		{
+			_inputAction.action.performed -= OnInputPerformed;
+		}
 
-        private void Update()
-        {
-            if (!Raycast(out var hit))
-            {
-                Unselect();
-                return;
-            }
+		private void OnInputPerformed(InputAction.CallbackContext _)
+		{
+			TryInteract();
+		}
 
-            var go = hit.collider.gameObject;
-            if (_lastHoveredObject == go)
-            {
-                return;
-            }
+		public override void ManagedUpdate()
+		{
+			if (!Raycast(out var hit))
+			{
+				Unselect();
+				return;
+			}
 
-            _lastHoveredObject = go;
+			var go = hit.collider.gameObject;
+			if (_lastHoveredObject == go)
+			{
+				return;
+			}
 
-            if (!hit.collider.gameObject.TryGetComponent<IInteractable>(out var interactable))
-            {
-                Unselect();
-                return;
-            }
-            
-            Select(interactable);
-        }
+			_lastHoveredObject = go;
 
-        private void Unselect()
-        {
-            Select(null);
-        }
+			if (!hit.collider.gameObject.TryGetComponent<IInteractable>(out var interactable))
+			{
+				Unselect();
+				return;
+			}
 
-        private void Select(IInteractable interactable)
-        {
-            if (_lastInteractable != interactable)
-            {
-                var last = _lastInteractable;
-                _lastInteractable = interactable;
-                EventBus.Instance.Publish(new OnSelectionChangedEvent(_lastInteractable, last));
-            }
-        }
+			Select(interactable);
+		}
 
-        private void TryInteract()
-        {
-            if(_lastInteractable != null)
-            {
-                InteractSystem.Instance.OnInteractInput(_lastInteractable);
-            }
-        }
+		private void Unselect()
+		{
+			Select(null);
+		}
 
-        private bool Raycast(out RaycastHit hit)
-        {
-            return Physics.Raycast(_camera.transform.position, _camera.transform.forward, out hit, _castDistance, _mask);
-        }
-    }
+		private void Select(IInteractable interactable)
+		{
+			if (_lastInteractable != interactable)
+			{
+				var last = _lastInteractable;
+				_lastInteractable = interactable;
+				EventBus.Instance.Publish(new OnSelectionChangedEvent(_lastInteractable, last));
+			}
+		}
+
+		private void TryInteract()
+		{
+			if (_lastInteractable != null)
+			{
+				InteractSystem.Instance.OnInteractInput(_lastInteractable);
+			}
+		}
+
+		private bool Raycast(out RaycastHit hit)
+		{
+			return Physics.Raycast(_camera.transform.position, _camera.transform.forward, out hit, _castDistance, _mask);
+		}
+	}
 }

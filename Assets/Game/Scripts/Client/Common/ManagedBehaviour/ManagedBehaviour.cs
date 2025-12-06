@@ -1,4 +1,5 @@
-﻿using Game.Client.App;
+﻿using System;
+using Game.Client.App;
 using Game.Core;
 
 namespace Game.Client
@@ -6,6 +7,11 @@ namespace Game.Client
 	public class ManagedBehaviour: ManagedBehaviourBase
 	{
 		private ITimeService _timeService;
+
+		private void Start()
+		{
+			_timeService = ServiceLocator.Get<ITimeService>();
+		}
 
 		public virtual bool UpdateWhenPaused => false;
 
@@ -27,13 +33,17 @@ namespace Game.Client
 
 		private bool CanUpdate()
 		{
-			return UpdateWhenPaused || !_timeService.IsPaused;
+			if (_timeService == null)
+			{
+				_timeService = ServiceLocator.Get<ITimeService>();
+			}
+
+			return UpdateWhenPaused || _timeService is { IsPaused: false };
 		}
+		
 
 		protected sealed override void Awake()
 		{
-			_timeService = ServiceLocator.Get<ITimeService>();
-
 			ManagedInitialize();
 		}
 

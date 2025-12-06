@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 namespace Game.Client
 {
-	public class CharacterMovement: MonoBehaviour
+	public class CharacterMovement: ManagedBehaviour
 	{
 		public enum MovementState
 		{
@@ -198,7 +198,7 @@ namespace Game.Client
 			_horizontalInput = 0;
 		}
 
-		private void Update()
+		public override void ManagedUpdate()
 		{
 			HandleGround();
 
@@ -210,7 +210,7 @@ namespace Game.Client
 			Rigidbody.linearDamping = _grounded ? GroundDrag : 0f;
 		}
 
-		private void FixedUpdate()
+		public override void ManagedFixedUpdate()
 		{
 			Move();
 		}

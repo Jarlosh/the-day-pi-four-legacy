@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Game.Client
 {
-	public class WallRunning: MonoBehaviour
+	public class WallRunning: ManagedBehaviour
 	{
 		[field: SerializeField] private Rigidbody Rigidbody { get; set; }
 		[field: SerializeField] private CameraController CameraController { get; set; }
@@ -57,7 +57,15 @@ namespace Game.Client
 			_characterMovement = GetComponent<CharacterMovement>();
 		}
 
-		private void Update()
+		public override void ManagedFixedUpdate()
+		{
+			if (_characterMovement.WallRunning)
+			{
+				ProcessWallRunningMovement();
+			}
+		}
+
+		public override void ManagedUpdate()
 		{
 			CheckForWall();
 
@@ -65,13 +73,6 @@ namespace Game.Client
 			UpdateState();
 		}
 
-		private void FixedUpdate()
-		{
-			if (_characterMovement.WallRunning)
-			{
-				ProcessWallRunningMovement();
-			}
-		}
 
 		private void CheckForWall()
 		{

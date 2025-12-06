@@ -85,7 +85,7 @@ namespace Game.Client.App
 
 		public void Resume(object source)
 		{
-			if (_pauseSources.Contains(source))
+			if (!_pauseSources.Contains(source))
 			{
 				Debug.LogError("[TimeService] PauseSource contains source should be True");
 			}

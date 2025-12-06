@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -15,7 +16,13 @@ namespace Game.Client
 		
 		private LoadingScreenProvider _loadingScreenProvider = new LoadingScreenProvider();
 		private CancellationTokenSource _gameCancellationSource = new();
-		
+
+		private void OnValidate()
+		{
+			Cursor.lockState = CursorLockMode.Confined;
+			Cursor.visible = true;
+		}
+
 		public async void OnStartGameButton()
 		{
 			_fadeScreen.gameObject.SetActive(true);
