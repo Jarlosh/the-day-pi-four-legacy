@@ -71,7 +71,7 @@ namespace Game.Client
 		
 		private void Start()
 		{
-			StartGame().Forget();
+			//StartGame().Forget();
 		}
 
 		private void OnDestroy()

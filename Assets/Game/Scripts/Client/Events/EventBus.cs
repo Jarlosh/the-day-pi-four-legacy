@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Game.Shared;
 
 namespace Game.Client
@@ -44,7 +45,7 @@ namespace Game.Client
             }
 
             // todo: add callback's generic param check
-            foreach (var callback in subscribers)
+            foreach (var callback in subscribers.ToList())
             {
                 callback.DynamicInvoke(evt);
             }
