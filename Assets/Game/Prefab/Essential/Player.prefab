@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1593013894087966240}
   - component: {fileID: 1430881629718343963}
   m_Layer: 6
-  m_Name: VacuumGun
+  m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,10 +29,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7174898791500324783}
-  - {fileID: 8469015526921812280}
-  m_Father: {fileID: 6623073749233204495}
+  m_Children: []
+  m_Father: {fileID: 1489073029235897382}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1430881629718343963
 MonoBehaviour:
@@ -56,7 +54,6 @@ MonoBehaviour:
   _vacuumLayerMask:
     serializedVersion: 2
     m_Bits: 1
-  _attractionSpeed: 10
   _attractionDistance: 1.5
   _shootForce: 50
   _shootInterval: 0.2
@@ -74,7 +71,7 @@ GameObject:
   - component: {fileID: 2130062410379725020}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -87,13 +84,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618469826137955468}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -3.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1489073029235897382}
-  - {fileID: 1593013894087966240}
   - {fileID: 1304773821430926961}
   - {fileID: 8679523793691930170}
   m_Father: {fileID: 0}
@@ -155,6 +151,39 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!1 &1936044444604524816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3035459169100607082}
+  m_Layer: 6
+  m_Name: WeaponRender
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3035459169100607082
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936044444604524816}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7174898791500324783}
+  - {fileID: 8469015526921812280}
+  m_Father: {fileID: 1304773821430926961}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2054283970821753645
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,12 +208,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054283970821753645}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.498, y: 0, z: 0.972}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.498, y: 0, z: 0.9720001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1593013894087966240}
+  m_Father: {fileID: 3035459169100607082}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2147485326242009787
 GameObject:
@@ -280,6 +309,7 @@ Transform:
   - {fileID: 4724684532879701724}
   - {fileID: 9070771791593349744}
   - {fileID: 8024041599617895159}
+  - {fileID: 1593013894087966240}
   m_Father: {fileID: 6623073749233204495}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5228140700960799003
@@ -315,7 +345,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2518632289353719300}
-  m_Father: {fileID: 1593013894087966240}
+  m_Father: {fileID: 3035459169100607082}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &537393612716186160
 MeshFilter:
@@ -708,6 +738,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2539046771134267013}
+  - {fileID: 3035459169100607082}
   m_Father: {fileID: 6623073749233204495}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8805102094305254261

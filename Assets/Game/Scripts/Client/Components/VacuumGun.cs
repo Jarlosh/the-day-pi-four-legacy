@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -11,6 +10,8 @@ namespace Game.Client
 {
     public class VacuumGun: MonoBehaviour
     {
+        public const float MinShootInterval = 0.025f;
+        
         [Header("References")]
         [SerializeField] private Camera _camera;
         [SerializeField] private Transform _holdPoint; // Точка, куда притягиваются объекты
@@ -20,13 +21,12 @@ namespace Game.Client
         [Header("Vacuum Settings")]
         [SerializeField] private float _vacuumRange = 10f;
         [SerializeField] private float _vacuumRadius = 0.5f; // Радиус рейкаста
-        [SerializeField] private int _maxObjects = 5; // Размер "обоймы"
+        [SerializeField] private int _maxObjects = 7; // Размер "обоймы"
         [SerializeField] private LayerMask _vacuumLayerMask;
-        [SerializeField] private float _attractionSpeed = 10f;
         [SerializeField] private float _attractionDistance = 0.1f; // Минимальная дистанция для "всасывания"
         
         [Header("Shoot Settings")]
-        [SerializeField] private float _shootForce = 20f;
+        [SerializeField] private float _shootForce = 50f;
         [SerializeField] private float _shootInterval = 0.2f; // Интервал между выстрелами
         [SerializeField] private float _collisionReenableDelay = 0.5f; // Задержка перед включением коллизий
         
@@ -39,7 +39,9 @@ namespace Game.Client
         private void Awake()
         {
             if (_camera == null)
+            {
                 _camera = Camera.main;
+            }
                 
             _vacuumAction.action.performed += OnVacuumPerformed;
             _vacuumAction.action.canceled += OnVacuumCanceled;
@@ -77,10 +79,34 @@ namespace Game.Client
         {
             CancelShoot();
         }
+
+        public void UpgradeClipCapacity()
+        {
+            _maxObjects += 1;
+        }
+        
+        public void UpgradeShootForce(float value)
+        {
+            _shootForce += value;
+        }
+        
+        public void UpgradeShootInterval(float value)
+        {
+            _shootInterval = Mathf.Max(_shootInterval - value, MinShootInterval);
+        }
+
+        public void UpgradeVacuumRange(float value)
+        {
+            _vacuumRange += value;
+        }
+        
+        public void UpgradeVacuumRadius(float value)
+        {
+            _vacuumRadius += value;
+        }
         
         private async UniTaskVoid StartVacuum()
         {
-            // Отменяем предыдущий процесс всасывания, если был
             CancelVacuum();
             
             _vacuumCts = new CancellationTokenSource();
