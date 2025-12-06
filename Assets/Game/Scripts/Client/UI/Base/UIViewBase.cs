@@ -4,17 +4,17 @@ namespace Game.Client.UI
 {
     public class UIViewBase: MonoBehaviour
     {
-        protected virtual void Awake()
+        private void Awake()
         {   
             Init();
         }
 
-        protected virtual void OnEnable()
+        private void OnEnable()
         {
             Subscribe();
         }
 
-        protected virtual void OnDisable()
+        private void OnDisable()
         {
             Unsubscribe();
         }

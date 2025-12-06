@@ -1,16 +1,15 @@
-﻿using TMPro;
+﻿using Game.Core;
+using TMPro;
 using UnityEngine;
 
 namespace Game.Client.UI
 {
 	public class WaveInfoView: UIViewBase
 	{
-		[Header("References")] 
-		[SerializeField]
+		[Header("References")] [SerializeField]
 		private WaveManager _waveManager;
 
-		[Header("UI Elements")] 
-		[SerializeField]
+		[Header("UI Elements")] [SerializeField]
 		private TextMeshProUGUI _waveNumberText;
 
 		[SerializeField] private TextMeshProUGUI _enemiesRemainingText;
@@ -27,12 +26,9 @@ namespace Game.Client.UI
 
 		protected override void Init()
 		{
-			base.Init();
-
-			// Находим WaveManager автоматически
 			if (_waveManager == null)
 			{
-				_waveManager = FindFirstObjectByType<WaveManager>();
+				_waveManager = ServiceLocator.Get<WaveManager>();
 			}
 
 			UpdateWaveInfo();
@@ -65,7 +61,9 @@ namespace Game.Client.UI
 		private void Update()
 		{
 			if (_waveManager == null)
+			{
 				return;
+			}
 
 			UpdateEnemiesCount(_waveManager.GetActiveEnemiesCount());
 

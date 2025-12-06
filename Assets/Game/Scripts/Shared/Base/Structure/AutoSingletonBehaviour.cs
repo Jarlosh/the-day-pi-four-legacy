@@ -2,6 +2,7 @@
 
 namespace Game.Shared.Singletons
 {
+	[DefaultExecutionOrder(-1000)]
 	[DisallowMultipleComponent]
 	/// Init when a game is loaded, and will not destroyed anywhere
 	/// To use this implementation need in derived create static function with attribute [RuntimeInitializeOnLoadMethod] and call InstantiateAutoSingleton from it

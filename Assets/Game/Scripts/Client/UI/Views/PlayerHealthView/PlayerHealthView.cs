@@ -16,8 +16,6 @@ namespace Game.Client.UI
         
         protected override void Init()
         {
-            base.Init();
-            
             if (_playerHealth == null)
             {
                 var playerHealthComponent = FindFirstObjectByType<PlayerHealth>();

@@ -2,6 +2,7 @@
 
 namespace Game.Shared.Singletons
 {
+	[DefaultExecutionOrder(-1000)]
 	[DisallowMultipleComponent]
 	/// Init when scene that contain derived SceneSingletonBehaviour is Awake, before this Instance is null, after scene destoed is null
 	public abstract class SceneSingletonBehaviour<T>: MonoBehaviour where T: MonoBehaviour

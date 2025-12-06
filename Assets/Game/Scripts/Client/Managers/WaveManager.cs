@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Game.Core;
 using Game.Shared;
+using Game.Shared.Singletons;
 using UnityEngine;
 
 namespace Game.Client
 {
+	[DefaultExecutionOrder(-100)]
 	public class WaveManager: MonoBehaviour
 	{
 		[Header("Wave Settings")] 
@@ -49,6 +52,8 @@ namespace Game.Client
 
 		private void Awake()
 		{
+			ServiceLocator.Register<WaveManager>(this);
+			
 			if (_playerHealth == null)
 			{
 				var playerHealthComponent = FindFirstObjectByType<PlayerHealth>();
@@ -63,7 +68,7 @@ namespace Game.Client
 				_playerHealth.OnDeath += OnPlayerDeath;
 			}
 		}
-
+		
 		private void Start()
 		{
 			if (_waveSettings == null || _waveSettings.Waves.Count == 0)
@@ -97,8 +102,9 @@ namespace Game.Client
 			_waveCts = new CancellationTokenSource();
 			var token = _waveCts.Token;
 
-			var waves = _waveSettings.Waves;
+			await UniTask.NextFrame();
 
+			var waves = _waveSettings.Waves;
 			try
 			{
 				for (int i = 0; i < waves.Count; i++)
