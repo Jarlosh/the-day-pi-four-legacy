@@ -1,4 +1,5 @@
 ﻿using System;
+using Game.Core;
 using UnityEngine;
 
 namespace Game.Client
@@ -24,8 +25,9 @@ namespace Game.Client
 
 		public event Action<float> OnHealthChanged;
 		public event Action<float, float> OnDamageTaken; // damage, newHealth
+		public event Action<float> OnDamageDealt; 
 		public event Action OnDeath;
-
+		
 		private void Awake()
 		{
 			_currentHealth = _maxHealth;
@@ -40,6 +42,7 @@ namespace Game.Client
 
 			OnHealthChanged?.Invoke(_currentHealth);
 			OnDamageTaken?.Invoke(damage, _currentHealth);
+			OnDamageDealt?.Invoke(damage);
 
 			if (IsDead && _canDie)
 			{

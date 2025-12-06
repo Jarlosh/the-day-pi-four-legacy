@@ -22,4 +22,28 @@
 	public record CountdownEvent(int Seconds)
 	{
 	}
+	
+	public record EnemySpawnedEvent(Enemy Enemy)
+	{
+	}
+    
+	public record EnemyDeathEvent(Enemy Enemy)
+	{
+	}
+	
+	public record StylePointsAddedEvent(float Points, float TotalPoints)
+	{
+	}
+    
+	public record StyleRankChangedEvent(int RankIndex, string RankName, float Multiplier)
+	{
+	}
+	
+	public record StyleScoreChangedEvent(float TotalScore)
+	{
+	}
+    
+	public record StyleMeterChangedEvent(float MeterValue, int CurrentRankIndex)
+	{
+	}
 }

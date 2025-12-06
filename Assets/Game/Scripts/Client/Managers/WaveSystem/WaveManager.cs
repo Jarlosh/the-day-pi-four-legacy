@@ -230,6 +230,8 @@ namespace Game.Client
 			{
 				health.OnDeath += () => OnEnemyDeath(enemy);
 			}
+			
+			EventBus.Instance.Publish(new EnemySpawnedEvent(enemy));
 
 			return enemy;
 		}

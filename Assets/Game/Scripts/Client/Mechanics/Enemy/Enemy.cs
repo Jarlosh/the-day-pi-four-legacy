@@ -36,6 +36,8 @@ namespace Game.Client
 		private void HandleDeath()
 		{
 			IsDead = true;
+			
+			EventBus.Instance.Publish(new EnemyDeathEvent(this));
 			OnDeath();
 		}
 
