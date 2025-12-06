@@ -268,10 +268,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Client::Game.Client.MusicManager
   _audioSource1: {fileID: 7403801722975130945}
   _audioSource2: {fileID: 3892225102042857873}
-  _state1MusicList:
+  _stateMenuMusicList:
+  - {fileID: 8300000, guid: 594124b53bdd4b84a95119b09e146da2, type: 3}
+  _stateCalmMusicList:
   - {fileID: 8300000, guid: bb7cc96c151ca49488862e365bb71ca0, type: 3}
   - {fileID: 8300000, guid: a08cafaeb3240e14e9b1b24ce6743b68, type: 3}
-  _state2MusicList:
+  _stateBattleMusicList:
   - {fileID: 8300000, guid: cf3ac10d3314138468e3f39a8beb8aed, type: 3}
   - {fileID: 8300000, guid: 7c31803bd44afab45855ba6320918915, type: 3}
   _fadeDuration: 2

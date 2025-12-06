@@ -8,8 +8,9 @@ namespace Game.Client
 {
     public enum GameMusicState
     {
+        StateMenu,
         StateCalm,
-        StateBattle
+        StateBattle,
     }
 
     public class MusicManager: MonoBehaviour
@@ -19,14 +20,14 @@ namespace Game.Client
 
         [SerializeField] private AudioSource _audioSource2;
 
-        [Header("Music Lists")] [SerializeField]
-        private List<AudioClip> _state1MusicList = new List<AudioClip>();
-
-        [SerializeField] private List<AudioClip> _state2MusicList = new List<AudioClip>();
+        [Header("Music Lists")]
+        [SerializeField] private List<AudioClip> _stateMenuMusicList = new List<AudioClip>();
+        [SerializeField] private List<AudioClip> _stateCalmMusicList = new List<AudioClip>();
+        [SerializeField] private List<AudioClip> _stateBattleMusicList = new List<AudioClip>();
 
         [Header("Settings")] [SerializeField] private float _fadeDuration = 2f;
         [SerializeField] private float _maxVolume = 1f;
-        [SerializeField] private GameMusicState _initialState = GameMusicState.StateCalm;
+        [SerializeField] private GameMusicState _initialState = GameMusicState.StateMenu;
         [SerializeField] private bool _preloadAudio = true; // Предзагрузка аудио данных
 
         private GameMusicState _currentState;
@@ -118,8 +119,9 @@ namespace Game.Client
         {
             // Предзагружаем все аудио клипы из обоих списков
             var allClips = new List<AudioClip>();
-            allClips.AddRange(_state1MusicList);
-            allClips.AddRange(_state2MusicList);
+            allClips.AddRange(_stateMenuMusicList);
+            allClips.AddRange(_stateCalmMusicList);
+            allClips.AddRange(_stateBattleMusicList);
 
             foreach (var clip in allClips)
             {
@@ -319,9 +321,10 @@ namespace Game.Client
         {
             return _currentState switch
             {
-                GameMusicState.StateCalm => _state1MusicList,
-                GameMusicState.StateBattle => _state2MusicList,
-                _ => _state1MusicList
+                GameMusicState.StateMenu=> _stateMenuMusicList,
+                GameMusicState.StateCalm => _stateCalmMusicList,
+                GameMusicState.StateBattle => _stateBattleMusicList,
+                _ => _stateCalmMusicList
             };
         }
 
