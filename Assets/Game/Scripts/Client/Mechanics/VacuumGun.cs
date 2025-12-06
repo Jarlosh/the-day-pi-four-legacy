@@ -173,7 +173,7 @@ namespace Game.Client
                 if (_vacuumedObjects.Count >= _maxObjects)
                     break;
                     
-                var vacuumedObj = hit.collider.GetComponent<VacuumedObject>();
+                var vacuumedObj = hit.collider.GetComponentInParent<VacuumedObject>();
                 if (vacuumedObj != null && !vacuumedObj.IsVacuumed && !_vacuumedObjects.Contains(vacuumedObj) && !_currentlyVacuuming.Contains(vacuumedObj))
                 {
                     AddVacuumedObject(vacuumedObj, token);
