@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 165aff5f40e641e8a40e8280be1e0b10, type: 3}
+  m_Name: WaveSettings_01
+  m_EditorClassIdentifier: Game.Client::Game.Client.WaveSettings
+  <Waves>k__BackingField:
+  - <EnemyPrefabs>k__BackingField:
+    - {fileID: 5848876718710476701, guid: 12e4eaba82cc13240adecdb115753fd2, type: 3}
+    <MaxEnemiesInWave>k__BackingField: 5
+    <MaxSpawnsPerFrame>k__BackingField: 2
+    <SpawnInterval>k__BackingField: 0.5
+  - <EnemyPrefabs>k__BackingField:
+    - {fileID: 5848876718710476701, guid: 12e4eaba82cc13240adecdb115753fd2, type: 3}
+    <MaxEnemiesInWave>k__BackingField: 15
+    <MaxSpawnsPerFrame>k__BackingField: 2
+    <SpawnInterval>k__BackingField: 0.5
+  - <EnemyPrefabs>k__BackingField:
+    - {fileID: 5848876718710476701, guid: 12e4eaba82cc13240adecdb115753fd2, type: 3}
+    - {fileID: 5050727189571866477, guid: 92642d7e37a458c46b142d530faf544b, type: 3}
+    <MaxEnemiesInWave>k__BackingField: 20
+    <MaxSpawnsPerFrame>k__BackingField: 3
+    <SpawnInterval>k__BackingField: 0.15
