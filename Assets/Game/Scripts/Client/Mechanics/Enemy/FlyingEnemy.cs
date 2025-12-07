@@ -9,8 +9,8 @@ namespace Game.Client
 	[RequireComponent(typeof(Rigidbody))]
 	public class FlyingEnemy: Enemy
 	{
-		[Header("References")] [SerializeField]
-		private Transform _lookTarget; // Игрок (можно найти автоматически)
+		[Header("References")]
+		[SerializeField] private Transform _lookTarget; // Игрок (можно найти автоматически)
 
 		[Header("Movement Settings")] [SerializeField]
 		private float _movementRadius = 10f; // Радиус перемещения от стартовой позиции
@@ -19,10 +19,11 @@ namespace Game.Client
 		[SerializeField] private float _minMovementInterval = 1f; // Минимальный интервал
 		[SerializeField] private float _maxMovementInterval = 3f; // Максимальный интервал
 
-		[Header("Look Settings")] [SerializeField]
-		private float _lookSpeed = 5f; // Скорость поворота к игроку
+		[Header("Look Settings")]
 
 		[SerializeField] private bool _lookAtPlayer = true; // Всегда смотреть на игрока
+		[SerializeField] private float _maxRotationSpeed = 30f;
+		[SerializeField] private float _lookSpeed = 0.5f; // Скорость поворота к игроку
 
 		[Header("Obstacle Check")] [SerializeField]
 		private LayerMask _obstacleLayerMask; // Слои препятствий
@@ -122,10 +123,11 @@ namespace Game.Client
 			if (direction.sqrMagnitude > 0.01f)
 			{
 				var targetRotation = Quaternion.LookRotation(direction);
-				transform.rotation = Quaternion.Slerp(
+			
+				transform.rotation = Quaternion.RotateTowards(
 					transform.rotation,
 					targetRotation,
-					_lookSpeed * Time.deltaTime
+					_maxRotationSpeed * Time.deltaTime
 				);
 			}
 		}

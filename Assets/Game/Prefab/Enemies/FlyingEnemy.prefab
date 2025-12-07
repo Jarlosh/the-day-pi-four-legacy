@@ -5020,8 +5020,9 @@ MonoBehaviour:
   _movementSpeed: 2
   _minMovementInterval: 0.25
   _maxMovementInterval: 1
-  _lookSpeed: 5
   _lookAtPlayer: 1
+  _maxRotationSpeed: 30
+  _lookSpeed: 2
   _obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 129
@@ -10365,8 +10366,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0105333faa354ab39e81bbc671936bef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game.Client::Game.Client.LaserAttackBehaviour
-  _laserDamage: 5
-  _damageTickInterval: 0.2
+  _laserDamage: 1
+  _damageTickInterval: 0.3
   _maxLaserDistance: 50
   _playerLayerMask:
     serializedVersion: 2
