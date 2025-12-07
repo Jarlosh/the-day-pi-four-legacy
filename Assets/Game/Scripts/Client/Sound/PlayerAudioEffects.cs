@@ -196,8 +196,6 @@ namespace Game.Client
 
             _audioSource.PlayOneShot(clip);
 
-            _audioSource.pitch = _basePitch;
-
             if (_debugFootsteps && debugName == "Footstep")
             {
                 Debug.Log($"Played footstep: {clip.name}, pitch: {randomPitch:F2}");

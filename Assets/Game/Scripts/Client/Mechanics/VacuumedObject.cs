@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Game.Core;
@@ -21,6 +22,13 @@ namespace Game.Client
 
 		[SerializeField] private LayerMask _damageableLayers;
 
+		[Header("Impact Audio")]
+		[SerializeField] private AudioSource _audioSource;
+		[SerializeField] private List<AudioClip> _impactSounds = new List<AudioClip>();
+		[SerializeField] [Range(0f, 1f)] private float _soundPlayChance = 0.3f; 
+		[SerializeField] private float _impactSoundDelay = 0.3f; // Задержка между звуками падения
+		[SerializeField] private float _pitchRandomRange = 0.2f; // Диапазон случайного изменения pitch
+		[SerializeField] private float _basePitch = 1f;
 		private Rigidbody _rigidbody;
 		private Collider[] _colliders;
 		private Transform _targetPoint;
@@ -38,6 +46,7 @@ namespace Game.Client
 		private CancellationTokenSource _vacuumCts;
 		private CancellationTokenSource _collisionReenableCts;
 
+		private float _lastImpactSoundTime = 0f;
 		private int _extraDamage = 0;
 		
 		public bool IsVacuumed => _isVacuumed;
@@ -65,6 +74,8 @@ namespace Game.Client
 
 		private void OnCollisionEnter(Collision collision)
 		{
+			PlayImpactSound();
+			
 			if (!_canDealDamage)
 				return;
 
@@ -303,6 +314,30 @@ namespace Game.Client
 				}
 			}
 		}
+		
+		private void PlayImpactSound()
+		{
+			if (Time.time < _lastImpactSoundTime + _impactSoundDelay)
+				return;
+
+			if (_audioSource == null || _impactSounds == null || _impactSounds.Count == 0)
+				return;
+			
+			if (UnityEngine.Random.value > _soundPlayChance)
+				return;
+
+			var clip = _impactSounds[UnityEngine.Random.Range(0, _impactSounds.Count)];
+			if (clip == null)
+				return;
+
+			var randomPitch = _basePitch + UnityEngine.Random.Range(-_pitchRandomRange, _pitchRandomRange);
+			_audioSource.pitch = randomPitch;
+
+			_audioSource.PlayOneShot(clip);
+
+			_lastImpactSoundTime = Time.time;
+		}
+
 
 		private Collider GetPlayerCollider()
 		{

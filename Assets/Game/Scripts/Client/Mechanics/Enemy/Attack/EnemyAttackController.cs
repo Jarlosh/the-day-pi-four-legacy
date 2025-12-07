@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Game.Client
 {
 	public class EnemyAttackController: MonoBehaviour
 	{
-		[Header("References")] [SerializeField]
-		private Enemy _enemy;
+		[Header("References")] 
+		[SerializeField] private Enemy _enemy;
 
 		[SerializeField] private Transform _attackPoint;
 		[SerializeField] private MonoBehaviour _attackBehaviorComponent; // MonoBehaviour вместо интерфейса
@@ -16,8 +17,11 @@ namespace Game.Client
 		[SerializeField] private float _attackCooldown = 2f;
 		[SerializeField] private bool _canAttackWhileMoving = true;
 
-		[Header("Target")] [SerializeField] private Transform _target;
+		[Header("Target")] 
+		[SerializeField] private Transform _target;
 
+		public event Action OnAttack;
+		
 		private IEnemyAttackBehaviour _attackBehavior;
 		private float _lastAttackTime;
 		private bool _isAttacking;
@@ -128,6 +132,8 @@ namespace Game.Client
 			_isAttacking = true;
 			_lastAttackTime = Time.time;
 			_attackBehavior.StartAttack();
+			
+			OnAttack?.Invoke();
 		}
 
 		private void StopAttack()
