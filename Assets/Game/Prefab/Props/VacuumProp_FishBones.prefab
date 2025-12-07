@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec223672765c8e74e955d878cafdb9df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game.Client::Game.Client.VacuumedObject
-  _damage: 3
+  _damage: 15
   _minScale: 0.3
   _scaleReturnDuration: 0.3
   _damageableLayers:

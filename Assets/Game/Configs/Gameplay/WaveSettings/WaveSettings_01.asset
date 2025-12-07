@@ -15,17 +15,29 @@ MonoBehaviour:
   <Waves>k__BackingField:
   - <EnemyPrefabs>k__BackingField:
     - {fileID: 5848876718710476701, guid: 12e4eaba82cc13240adecdb115753fd2, type: 3}
-    <MaxEnemiesInWave>k__BackingField: 5
+    <MaxEnemiesInWave>k__BackingField: 15
     <MaxSpawnsPerFrame>k__BackingField: 2
-    <SpawnInterval>k__BackingField: 0.5
+    <SpawnInterval>k__BackingField: 3
   - <EnemyPrefabs>k__BackingField:
     - {fileID: 5848876718710476701, guid: 12e4eaba82cc13240adecdb115753fd2, type: 3}
-    <MaxEnemiesInWave>k__BackingField: 10
+    <MaxEnemiesInWave>k__BackingField: 20
     <MaxSpawnsPerFrame>k__BackingField: 2
-    <SpawnInterval>k__BackingField: 0.5
+    <SpawnInterval>k__BackingField: 3
   - <EnemyPrefabs>k__BackingField:
     - {fileID: 5848876718710476701, guid: 12e4eaba82cc13240adecdb115753fd2, type: 3}
     - {fileID: 5050727189571866477, guid: 92642d7e37a458c46b142d530faf544b, type: 3}
-    <MaxEnemiesInWave>k__BackingField: 20
+    <MaxEnemiesInWave>k__BackingField: 25
     <MaxSpawnsPerFrame>k__BackingField: 3
-    <SpawnInterval>k__BackingField: 0.15
+    <SpawnInterval>k__BackingField: 1.5
+  - <EnemyPrefabs>k__BackingField:
+    - {fileID: 5848876718710476701, guid: 12e4eaba82cc13240adecdb115753fd2, type: 3}
+    - {fileID: 5050727189571866477, guid: 92642d7e37a458c46b142d530faf544b, type: 3}
+    <MaxEnemiesInWave>k__BackingField: 30
+    <MaxSpawnsPerFrame>k__BackingField: 2
+    <SpawnInterval>k__BackingField: 1.5
+  - <EnemyPrefabs>k__BackingField:
+    - {fileID: 5848876718710476701, guid: 12e4eaba82cc13240adecdb115753fd2, type: 3}
+    - {fileID: 5050727189571866477, guid: 92642d7e37a458c46b142d530faf544b, type: 3}
+    <MaxEnemiesInWave>k__BackingField: 50
+    <MaxSpawnsPerFrame>k__BackingField: 3
+    <SpawnInterval>k__BackingField: 2
