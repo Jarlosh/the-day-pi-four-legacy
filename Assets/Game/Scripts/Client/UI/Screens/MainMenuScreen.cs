@@ -26,9 +26,9 @@ namespace Game.Client
 		public async void OnStartGameButton()
 		{
 			_fadeScreen.gameObject.SetActive(true);
-			_fadeScreen.DOFade(1f, _fadeDuration);
+			 _fadeScreen.DOFade(1f, _fadeDuration);
         
-			await UniTask.WaitForSeconds(1f);
+			await UniTask.WaitForSeconds(_fadeDuration);
         
 			LoadGame();
 		}
