@@ -23,6 +23,13 @@ namespace Game.Client
 
 		[SerializeField] private float _vacuumSwaySpeed = 3f; // Скорость покачивания при сосании
 
+		[Header("Shoot Recoil Settings")] [SerializeField]
+		private float _shootRecoilAmount = 0.05f; // Амплитуда тряски при выстреле
+
+		[SerializeField] private float _shootRecoilDuration = 0.15f; // Длительность тряски
+		[SerializeField] private float _shootRecoilSmoothness = 15f; // Плавность возврата после тряски
+		[SerializeField] private Vector2 _shootRecoilRange = new Vector2(0.8f, 1.2f); // Диапазон случайной силы тряски
+
 		[Header("Raycast Settings")] [SerializeField]
 		private float _raycastDistance = 100f; // Дальность рейкаста
 
@@ -36,7 +43,11 @@ namespace Game.Client
 		private float _swayTime = 0f;
 		private float _vacuumSwayTime = 0f;
 		private Vector3 _targetLookDirection;
-		
+
+		private Vector3 _shootRecoilOffset = Vector3.zero;
+		private float _shootRecoilTime = 0f;
+		private bool _isRecoiling = false;
+
 		private void Awake()
 		{
 			if (_camera == null)
@@ -59,14 +70,78 @@ namespace Game.Client
 			}
 		}
 
+		private void OnEnable()
+		{
+			EventBus.Instance.Subscribe<ShootEvent>(OnShoot);
+		}
+
+		private void OnDisable()
+		{
+			EventBus.Instance.Unsubscribe<ShootEvent>(OnShoot);
+		}
+
+		private void OnShoot(ShootEvent _)
+		{
+			TriggerShootRecoil();
+		}
+
+		private void TriggerShootRecoil()
+		{
+			_isRecoiling = true;
+			_shootRecoilTime = 0f;
+
+			float randomStrength = Random.Range(_shootRecoilRange.x, _shootRecoilRange.y);
+			_shootRecoilOffset = new Vector3(
+				Random.Range(-1f, 1f) * _shootRecoilAmount * randomStrength,
+				Random.Range(-1f, 1f) * _shootRecoilAmount * randomStrength,
+				Random.Range(-1f, 1f) * _shootRecoilAmount * randomStrength * 0.5f // Меньше по Z
+			);
+		}
+
 		private void Update()
 		{
 			if (_handlerTransform == null || _camera == null)
 				return;
 
+			HandleShootRecoil();
+
 			HandleHorizontalSway();
 
 			HandleRaycastRotation();
+		}
+
+		private void HandleShootRecoil()
+		{
+			if (_isRecoiling)
+			{
+				_shootRecoilTime += Time.deltaTime;
+
+				if (_shootRecoilTime >= _shootRecoilDuration)
+				{
+					_isRecoiling = false;
+					_shootRecoilOffset = Vector3.zero;
+				}
+				else
+				{
+					float t = _shootRecoilTime / _shootRecoilDuration;
+					float easeOut = 1f - (1f - t) * (1f - t); 
+					Vector3 currentOffset = _shootRecoilOffset * (1f - easeOut);
+
+				}
+			}
+			else if (_shootRecoilOffset != Vector3.zero)
+			{
+				_shootRecoilOffset = Vector3.Lerp(
+					_shootRecoilOffset,
+					Vector3.zero,
+					Time.deltaTime * _shootRecoilSmoothness
+				);
+
+				if (_shootRecoilOffset.magnitude < 0.001f)
+				{
+					_shootRecoilOffset = Vector3.zero;
+				}
+			}
 		}
 
 		private void HandleHorizontalSway()
@@ -105,6 +180,8 @@ namespace Game.Client
 
 			Vector3 targetPosition = _baseHandlerLocalPosition;
 			targetPosition.x += horizontalSway;
+			targetPosition += _shootRecoilOffset;
+
 			_handlerTransform.localPosition = Vector3.Lerp(
 				_handlerTransform.localPosition,
 				targetPosition,
@@ -145,17 +222,9 @@ namespace Game.Client
 			}
 		}
 
-		private void OnDisable()
+		private void OnDestroy()
 		{
-			if (_handlerTransform != null)
-			{
-				_handlerTransform.localPosition = _baseHandlerLocalPosition;
-			}
-
-			if (_gunTransform != null)
-			{
-				_gunTransform.localEulerAngles = _baseGunLocalRotation;
-			}
+			EventBus.Instance.Unsubscribe<ShootEvent>(OnShoot);
 		}
 	}
 }
