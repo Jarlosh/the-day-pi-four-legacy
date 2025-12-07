@@ -7,7 +7,28 @@ namespace Game.Client.UI
 {
 	public class StyleView: UIViewBase
 	{
+		[System.Serializable]
+		public class Stage
+		{
+			[Header("UI Settings")]
+			public Color uiColor = Color.white;         // цвет основного изображения
+			public Sprite backgroundSprite;             // фон
 
+			[Header("UI Particle Settings")]
+			public Color particleColor = Color.white;   // цвет UI-частиц
+			public float particleSpeed = 200f;          // скорость движения частиц
+			public float particleRate = 10f;            // частота спавна
+		}
+
+		[Header("References")]
+		public Image mainImage;                 // основное изображение
+		public Image backgroundImage;           // фоновое изображение
+		public UISimpleEmitter uiEmitter;       // наш UI-эмиттер
+
+		[Header("Stages")]
+		public Stage[] stages;
+
+		private int currentStage = -1;
 		[Header("UI Elements")]
 		[SerializeField]
 		private TextMeshProUGUI _rankText;
@@ -93,6 +114,8 @@ namespace Game.Client.UI
 				if (_rankColors != null && rankIndex < _rankColors.Length)
 				{
 					_rankText.color = _rankColors[rankIndex];
+					SetStage(rankIndex);
+					
 					_meterSlider.fillRect.GetComponent<Image>().color = _rankColors[rankIndex];
 				}
 			}
@@ -101,6 +124,41 @@ namespace Game.Client.UI
 			{
 				_multiplierText.text = string.Format(_multiplierFormat, multiplier);
 			}
+		}
+		
+		public void SetStage(int index)
+		{
+			if (index < 0 || index >= stages.Length)
+				return;
+
+			currentStage = index;
+			Stage stage = stages[index];
+
+			// Главный UI элемент
+			if (mainImage != null)
+			{
+				Color safeColor = stage.uiColor;
+
+				// защита от невидимой альфы
+				if (safeColor.a <= 0.01f)
+					safeColor.a = 1f;
+
+				mainImage.color = safeColor;
+			}
+
+			// Фон
+			if (backgroundImage != null)
+				backgroundImage.sprite = stage.backgroundSprite;
+
+			// Эмиттер UI-частиц
+			if (uiEmitter != null)
+			{
+				uiEmitter.particleColor = stage.particleColor;
+				uiEmitter.speed = stage.particleSpeed;
+				uiEmitter.spawnRate = stage.particleRate;
+			}
+
+			Debug.Log("Stage switched to: " + (index + 1));
 		}
 
 		private void UpdateMeterDisplay(float meterValue)

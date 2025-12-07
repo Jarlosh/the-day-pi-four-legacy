@@ -5,26 +5,26 @@ using System.Collections.Generic;
 public class AmmoUI : MonoBehaviour
 {
     [Header("References")]
-    public Image cellTemplate;            // Префаб ячейки (выключенный объект-шаблон)
+    public Image cellTemplate;            // РџСЂРµС„Р°Р± СЏС‡РµР№РєРё (РІС‹РєР»СЋС‡РµРЅРЅС‹Р№ РѕР±СЉРµРєС‚-С€Р°Р±Р»РѕРЅ)
 
     [Header("Sprites")]
-    public Sprite emptyCellSprite;        // Пустая ячейка
-    public Sprite filledCellSprite;       // Ячейка с патроном
+    public Sprite emptyCellSprite;        // РџСѓСЃС‚Р°СЏ СЏС‡РµР№РєР°
+    public Sprite filledCellSprite;       // РЇС‡РµР№РєР° СЃ РїР°С‚СЂРѕРЅРѕРј
 
     private List<Image> ammoCells = new List<Image>();
     private int currentMax = 0;
 
-    // Вызывает кодер
+    // Р’С‹Р·С‹РІР°РµС‚ РєРѕРґРµСЂ
     public void UpdateAmmo(int currentAmmo, int maxAmmo)
     {
-        // Если изменилось максимальное количество — перестраиваем UI
+        // Р•СЃР»Рё РёР·РјРµРЅРёР»РѕСЃСЊ РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ вЂ” РїРµСЂРµСЃС‚СЂР°РёРІР°РµРј UI
         if (maxAmmo != currentMax)
         {
             RebuildCells(maxAmmo);
             currentMax = maxAmmo;
         }
 
-        // Обновляем спрайты
+        // РћР±РЅРѕРІР»СЏРµРј СЃРїСЂР°Р№С‚С‹
         for (int i = 0; i < ammoCells.Count; i++)
         {
             ammoCells[i].sprite = (i < currentAmmo) ? filledCellSprite : emptyCellSprite;
@@ -33,13 +33,13 @@ public class AmmoUI : MonoBehaviour
 
     private void RebuildCells(int maxAmmo)
     {
-        // Удаляем старые
+        // РЈРґР°Р»СЏРµРј СЃС‚Р°СЂС‹Рµ
         foreach (var img in ammoCells)
             Destroy(img.gameObject);
 
         ammoCells.Clear();
 
-        // Создаём новые
+        // РЎРѕР·РґР°С‘Рј РЅРѕРІС‹Рµ
         for (int i = 0; i < maxAmmo; i++)
         {
             Image newCell = Instantiate(cellTemplate, transform);
