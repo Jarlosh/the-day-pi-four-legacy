@@ -120,7 +120,9 @@ namespace Game.Client
 			{
 				// Проверяем землю через рейкаст
 				RaycastHit hit;
-				if (Physics.Raycast(basePosition + Vector3.up * 10f, Vector3.down, out hit, 20f, _groundLayer))
+				var startPos = basePosition;
+				basePosition.y = 5; // ceil fix crutch
+				if (Physics.Raycast(startPos, Vector3.down, out hit, 20f, _groundLayer))
 				{
 					return hit.point;
 				}
