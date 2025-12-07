@@ -26,6 +26,7 @@ namespace Game.Client
 		private const float UnlimitedSpeed = 999f;
 
 		[field: SerializeField] public Transform Orientation { get; private set; }
+		[field: SerializeField] public Transform Render { get; private set; }
 		[field: SerializeField] public Climbing ClimbingBehaviour { get; private set; }
 		[field: SerializeField] public Rigidbody Rigidbody { get; private set; }
 		
@@ -397,7 +398,7 @@ namespace Game.Client
 
 		private void StartCrouch()
 		{
-			transform.localScale = new Vector3(transform.localScale.x, CrouchYScale, transform.localScale.z);
+			Render.transform.localScale = new Vector3(transform.localScale.x, CrouchYScale, transform.localScale.z);
 			Rigidbody.AddForce(Vector3.down * (5f * Rigidbody.mass), ForceMode.Impulse);
 
 			Crouching = true;

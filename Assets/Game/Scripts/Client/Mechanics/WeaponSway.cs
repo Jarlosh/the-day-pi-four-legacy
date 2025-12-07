@@ -1,0 +1,161 @@
+﻿using UnityEngine;
+
+namespace Game.Client
+{
+	public class WeaponSway: MonoBehaviour
+	{
+		[Header("References")] [SerializeField]
+		private CharacterMovement _characterMovement;
+
+		[SerializeField] private Camera _camera;
+		[SerializeField] private VacuumGun _vacuumGun;
+		[SerializeField] private Transform _handlerTransform; // Handler transform
+		[SerializeField] private Transform _gunTransform; // SM_Gun transform (дочерний Handler)
+
+		[Header("Horizontal Sway Settings")] [SerializeField]
+		private float _swayAmount = 0.02f; // Амплитуда покачивания влево-вправо
+
+		[SerializeField] private float _swaySpeed = 2f; // Скорость покачивания
+		[SerializeField] private float _swaySmoothness = 5f; // Плавность анимации
+
+		[Header("Vacuum Sway Settings")] [SerializeField]
+		private float _vacuumSwayMultiplier = 2f; // Множитель покачивания при сосании
+
+		[SerializeField] private float _vacuumSwaySpeed = 3f; // Скорость покачивания при сосании
+
+		[Header("Raycast Settings")] [SerializeField]
+		private float _raycastDistance = 100f; // Дальность рейкаста
+
+		[SerializeField] private LayerMask _raycastLayerMask = -1; // Маска слоёв для рейкаста
+
+		[Header("Rotation Settings")] [SerializeField]
+		private float _rotationSmoothness = 10f; // Плавность поворота Handler
+
+		private Vector3 _baseHandlerLocalPosition;
+		private Vector3 _baseGunLocalRotation;
+		private float _swayTime = 0f;
+		private float _vacuumSwayTime = 0f;
+		private Vector3 _targetLookDirection;
+		
+		private void Awake()
+		{
+			if (_camera == null)
+				_camera = Camera.main;
+
+			if (_characterMovement == null)
+				_characterMovement = GetComponentInParent<CharacterMovement>();
+
+			if (_vacuumGun == null)
+				_vacuumGun = GetComponentInParent<VacuumGun>();
+
+			if (_handlerTransform != null)
+			{
+				_baseHandlerLocalPosition = _handlerTransform.localPosition;
+			}
+
+			if (_gunTransform != null)
+			{
+				_baseGunLocalRotation = _gunTransform.localEulerAngles;
+			}
+		}
+
+		private void Update()
+		{
+			if (_handlerTransform == null || _camera == null)
+				return;
+
+			HandleHorizontalSway();
+
+			HandleRaycastRotation();
+		}
+
+		private void HandleHorizontalSway()
+		{
+			if (_characterMovement == null)
+				return;
+
+			float movementSpeed = _characterMovement.Rigidbody.linearVelocity.magnitude;
+			bool isMoving = movementSpeed > 0.5f;
+			bool isVacuuming = _vacuumGun != null && _vacuumGun.IsVacuuming;
+
+			float horizontalSway = 0f;
+
+			if (isMoving)
+			{
+				_swayTime += Time.deltaTime * _swaySpeed;
+				float speedMultiplier = Mathf.Clamp01(movementSpeed / _characterMovement.SprintSpeed);
+				horizontalSway = Mathf.Sin(_swayTime) * _swayAmount * speedMultiplier;
+			}
+			else
+			{
+				_swayTime = Mathf.Lerp(_swayTime, 0f, Time.deltaTime * _swaySmoothness);
+				horizontalSway = Mathf.Lerp(horizontalSway, 0f, Time.deltaTime * _swaySmoothness);
+			}
+
+			if (isVacuuming)
+			{
+				_vacuumSwayTime += Time.deltaTime * _vacuumSwaySpeed;
+				float vacuumSway = Mathf.Sin(_vacuumSwayTime) * _swayAmount * _vacuumSwayMultiplier;
+				horizontalSway += vacuumSway;
+			}
+			else
+			{
+				_vacuumSwayTime = Mathf.Lerp(_vacuumSwayTime, 0f, Time.deltaTime * _swaySmoothness);
+			}
+
+			Vector3 targetPosition = _baseHandlerLocalPosition;
+			targetPosition.x += horizontalSway;
+			_handlerTransform.localPosition = Vector3.Lerp(
+				_handlerTransform.localPosition,
+				targetPosition,
+				Time.deltaTime * _swaySmoothness
+			);
+		}
+
+		private void HandleRaycastRotation()
+		{
+			Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
+			RaycastHit hit;
+
+			Vector3 targetPoint;
+			if (Physics.Raycast(ray, out hit, _raycastDistance, _raycastLayerMask))
+			{
+				targetPoint = hit.point;
+			}
+			else
+			{
+				targetPoint = ray.origin + ray.direction * _raycastDistance;
+			}
+
+			Vector3 directionToTarget = (targetPoint - _handlerTransform.position).normalized;
+
+			Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+			_handlerTransform.rotation = Quaternion.Slerp(
+				_handlerTransform.rotation,
+				targetRotation,
+				Time.deltaTime * _rotationSmoothness
+			);
+
+			if (_gunTransform != null)
+			{
+				Vector3 gunRotation = _gunTransform.localEulerAngles;
+				gunRotation.x = Mathf.LerpAngle(gunRotation.x, _baseGunLocalRotation.x, Time.deltaTime * _rotationSmoothness);
+				gunRotation.z = Mathf.LerpAngle(gunRotation.z, _baseGunLocalRotation.z, Time.deltaTime * _rotationSmoothness);
+				_gunTransform.localEulerAngles = gunRotation;
+			}
+		}
+
+		private void OnDisable()
+		{
+			if (_handlerTransform != null)
+			{
+				_handlerTransform.localPosition = _baseHandlerLocalPosition;
+			}
+
+			if (_gunTransform != null)
+			{
+				_gunTransform.localEulerAngles = _baseGunLocalRotation;
+			}
+		}
+	}
+}
