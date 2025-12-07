@@ -66,6 +66,7 @@ namespace Game.Client
 		public void OnPlayerEnteredTrigger()
 		{
 			_playerInTrigger = true;
+			_triggerZone.gameObject.SetActive(false);
 			CloseDoor().Forget();
 		}
 	}
