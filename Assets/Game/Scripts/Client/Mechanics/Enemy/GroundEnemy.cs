@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
@@ -9,7 +10,7 @@ namespace Game.Client
 	{
 		[Header("References")]
 		[SerializeField] private Transform _lookTarget; // Игрок
-        
+		
 		[Header("Movement Settings")]
 		[SerializeField] private float _movementSpeed = 3f;
 		[SerializeField] private float _rotationSpeed = 5f;
@@ -17,6 +18,8 @@ namespace Game.Client
 		[SerializeField] private float _updatePathInterval = 0.5f; // Как часто обновлять путь
 		[SerializeField] private EnemyAnimator _animator;
 		[SerializeField] private float _stunDuration;
+
+		[SerializeField] private List<Collider> _colliders;
 		
 		private NavMeshAgent _navAgent;
 		private float _lastPathUpdateTime;
@@ -145,6 +148,12 @@ namespace Game.Client
 		protected override void OnDeath()
 		{
 			base.OnDeath();
+
+			foreach (var collider in _colliders)
+			{
+				collider.enabled = false;
+			}
+			
 			if (_navAgent != null)
 			{
 				_navAgent.isStopped = true;

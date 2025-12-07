@@ -171,7 +171,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &4302871792341531592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,6 +185,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game.Client::Game.Client.VacuumedObject
   _damage: 5
+  _minScale: 0.3
+  _scaleReturnDuration: 0.3
   _damageableLayers:
     serializedVersion: 2
     m_Bits: 512

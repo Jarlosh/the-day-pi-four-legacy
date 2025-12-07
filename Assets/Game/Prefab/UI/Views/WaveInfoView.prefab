@@ -66,10 +66,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enemies remaining
+  m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 46a677e560f03de43a0705f18536cc8f, type: 2}
+  m_sharedMaterial: {fileID: 5126911575969567221, guid: 46a677e560f03de43a0705f18536cc8f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -229,10 +229,29 @@ MonoBehaviour:
   _waveNumberText: {fileID: 821947283843653863}
   _enemiesRemainingText: {fileID: 7411092593277933324}
   _timerText: {fileID: 8710294268064210098}
-  _waveFormat: Wave {0}/{1}
-  _enemiesFormat: 'Enemies: {0}'
+  _waveFormat:
+    m_TableReference:
+      m_TableCollectionName: GUID:48ac52be9bf787c42b3ca8afd00b1346
+    m_TableEntryReference:
+      m_KeyId: 4199710031873
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _enemiesFormat:
+    m_TableReference:
+      m_TableCollectionName: GUID:48ac52be9bf787c42b3ca8afd00b1346
+    m_TableEntryReference:
+      m_KeyId: 4199710031872
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _timerFormat: '{0:0}'
   _showTimer: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &6688877248929412878
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,10 +317,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Timer
+  m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 46a677e560f03de43a0705f18536cc8f, type: 2}
+  m_sharedMaterial: {fileID: 5126911575969567221, guid: 46a677e560f03de43a0705f18536cc8f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -483,10 +502,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Wave Number : 1/999'
+  m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 46a677e560f03de43a0705f18536cc8f, type: 2}
+  m_sharedMaterial: {fileID: 5126911575969567221, guid: 46a677e560f03de43a0705f18536cc8f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

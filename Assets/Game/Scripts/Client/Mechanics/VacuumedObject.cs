@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Game.Core;
 using Game.Shared;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,8 +12,12 @@ namespace Game.Client
 	[RequireComponent(typeof(Rigidbody))]
 	public class VacuumedObject: MonoBehaviour
 	{
-		[Header("Damage Settings")] [SerializeField]
-		private float _damage = 10f;
+		[Header("Damage Settings")] 
+		[SerializeField] private float _damage = 10f;
+		
+		[Header("Scale Settings")]
+		[SerializeField] private float _minScale = 0.1f; // Минимальный масштаб при всасывании
+		[SerializeField] private float _scaleReturnDuration = 0.1f; // Длительность возврата масштаба при отмене/выстреле
 
 		[SerializeField] private LayerMask _damageableLayers;
 
@@ -24,6 +29,12 @@ namespace Game.Client
 		private bool _canDealDamage;
 		private bool _hasReachedTarget;
 		private int _playerLayer;
+		
+		private Vector3 _originalScale;
+		private float _startVacuumDistance; 
+		private bool _isScalingBack = false;
+		private CancellationTokenSource _scaleBackCts;
+		
 		private CancellationTokenSource _vacuumCts;
 		private CancellationTokenSource _collisionReenableCts;
 
@@ -39,13 +50,15 @@ namespace Game.Client
 		{
 			_rigidbody = GetComponent<Rigidbody>();
 			_colliders = GetComponentsInChildren<Collider>();
-			_playerLayer = LayerMask.NameToLayer("Player");
+			_playerLayer = LayerManager.Player;
+			_originalScale = transform.localScale;
 		}
 
 		private void OnDestroy()
 		{
 			CancelVacuum();
 			CancelCollisionReenable();
+			CancelScaleBack();
 		}
 
 		private void OnCollisionEnter(Collision collision)
@@ -79,6 +92,11 @@ namespace Game.Client
 			_isVacuumed = true;
 			_hasReachedTarget = false;
 			_canDealDamage = false;
+			
+			_startVacuumDistance = Vector3.Distance(transform.position, _targetPoint.position);
+			
+			CancelScaleBack();
+			_isScalingBack = false;
 
 			_vacuumCts = CancellationTokenSource.CreateLinkedTokenSource(token);
 
@@ -119,9 +137,62 @@ namespace Game.Client
 				else
 				{
 					_rigidbody.AddForce(direction * _rigidbody.mass * 50f, ForceMode.Force);
+					UpdateScale(distance);
 				}
 			}
 		}
+		
+		private void UpdateScale(float currentDistance)
+		{
+			if (_isScalingBack)
+				return;
+			
+			float progress = Mathf.Clamp01(currentDistance / _startVacuumDistance);
+			
+			float scaleFactor = Mathf.Lerp(_minScale, 1f, progress);
+			transform.localScale = _originalScale * scaleFactor;
+		}
+		
+		private async UniTaskVoid ScaleBackToOriginal()
+		{
+			_isScalingBack = true;
+			_scaleBackCts = new CancellationTokenSource();
+			
+			try
+			{
+				Vector3 startScale = transform.localScale;
+				float elapsed = 0f;
+				
+				while (elapsed < _scaleReturnDuration && !_scaleBackCts.Token.IsCancellationRequested)
+				{
+					elapsed += Time.deltaTime;
+					float t = elapsed / _scaleReturnDuration;
+					
+					transform.localScale = Vector3.Lerp(startScale, _originalScale, t);
+					
+					await UniTask.Yield(_scaleBackCts.Token);
+				}
+				
+				transform.localScale = _originalScale;
+			}
+			catch (OperationCanceledException)
+			{
+				// Отменено
+			}
+			finally
+			{
+				_isScalingBack = false;
+				_scaleBackCts?.Dispose();
+				_scaleBackCts = null;
+			}
+		}
+		
+		private void CancelScaleBack()
+		{
+			AsyncUtils.TryCancelDisposeNull(ref _scaleBackCts);
+			_isScalingBack = false;
+		}
+
 
 		public void CancelVacuum()
 		{
@@ -137,6 +208,7 @@ namespace Game.Client
 			_canDealDamage = false;
 
 			SetPlayerCollision(true);
+			ScaleBackToOriginal().Forget();
 		}
 
 		public void SuckIntoPoint(Vector3 point)
@@ -145,6 +217,8 @@ namespace Game.Client
 			_vacuumCts = null;
 
 			transform.position = point;
+			
+			transform.localScale = _originalScale * _minScale;
 
 			if (_rigidbody != null)
 			{
@@ -156,15 +230,20 @@ namespace Game.Client
 			gameObject.SetActive(false);
 		}
 
+
 		public async UniTaskVoid ShootFromPoint(Vector3 point, Vector3 force, float collisionReenableDelay, CancellationToken token)
 		{
 			gameObject.SetActive(true);
+			
+			transform.localScale = _originalScale * _minScale;
 
 			transform.position = point;
 
 			_isVacuumed = false;
 			_hasReachedTarget = false;
 			_canDealDamage = true;
+			
+			ScaleBackToOriginal().Forget();
 
 			if (_rigidbody != null)
 			{

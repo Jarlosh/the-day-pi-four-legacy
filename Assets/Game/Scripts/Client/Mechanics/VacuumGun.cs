@@ -12,12 +12,20 @@ namespace Game.Client
 	{
 		public const float MinShootInterval = 0.025f;
 
+		public enum ShootMode
+		{
+			Single, // По одному объекту
+			Shotgun // Дробовик (несколько объектов одновременно)
+		}
+
 		[Header("References")] [SerializeField]
 		private Camera _camera;
 
 		[SerializeField] private Transform _holdPoint; // Точка, куда притягиваются объекты
 		[SerializeField] private InputActionReference _vacuumAction; // ПКМ
 		[SerializeField] private InputActionReference _shootAction; // ЛКМ
+		[SerializeField] private InputActionReference _nextModeAction; // Следующий режим
+		[SerializeField] private InputActionReference _prevModeAction; // Предыдущий режим
 
 		[Header("Vacuum Settings")] [SerializeField]
 		private float _vacuumRange = 10f;
@@ -33,6 +41,13 @@ namespace Game.Client
 		[SerializeField] private float _shootInterval = 0.2f; // Интервал между выстрелами
 		[SerializeField] private float _collisionReenableDelay = 0.5f; // Задержка перед включением коллизий
 		[SerializeField] private float _referenceMass = 1;
+
+		[Header("Shoot Mode Settings")] [SerializeField]
+		private ShootMode _currentShootMode = ShootMode.Single;
+
+		[SerializeField] private int _shotgunProjectileCount = 3; // Количество объектов при выстреле дробовиком
+		[SerializeField] private float _shotgunSpreadAngle = 15f; // Угол разброса для дробовика
+
 		private List<VacuumedObject> _vacuumedObjects = new List<VacuumedObject>();
 		private List<VacuumedObject> _currentlyVacuuming = new List<VacuumedObject>(); // Объекты, которые сейчас всасываются
 
@@ -41,6 +56,9 @@ namespace Game.Client
 		private CancellationTokenSource _shootCts;
 
 		public bool IsVacuuming => _isVacuuming;
+		public int VacuumedObjectsCount => _vacuumedObjects.Count;
+		public int MaxObjects => _maxObjects;
+		public ShootMode CurrentShootMode => _currentShootMode;
 
 		private void Awake()
 		{
@@ -53,6 +71,16 @@ namespace Game.Client
 			_vacuumAction.action.canceled += OnVacuumCanceled;
 			_shootAction.action.performed += OnShootPerformed;
 			_shootAction.action.canceled += OnShootCanceled;
+
+			if (_nextModeAction != null)
+			{
+				_nextModeAction.action.performed += OnNextModePerformed;
+			}
+
+			if (_prevModeAction != null)
+			{
+				_prevModeAction.action.performed += OnPrevModePerformed;
+			}
 		}
 
 		private void OnDestroy()
@@ -62,8 +90,50 @@ namespace Game.Client
 			_shootAction.action.performed -= OnShootPerformed;
 			_shootAction.action.canceled -= OnShootCanceled;
 
+			if (_nextModeAction != null)
+			{
+				_nextModeAction.action.performed -= OnNextModePerformed;
+			}
+
+			if (_prevModeAction != null)
+			{
+				_prevModeAction.action.performed -= OnPrevModePerformed;
+			}
+
 			CancelVacuum();
 			CancelShoot();
+		}
+
+		private void OnNextModePerformed(InputAction.CallbackContext _)
+		{
+			SwitchToNextMode();
+		}
+
+		private void OnPrevModePerformed(InputAction.CallbackContext _)
+		{
+			SwitchToPreviousMode();
+		}
+
+		private void SwitchToNextMode()
+		{
+			ShootMode nextMode = _currentShootMode == ShootMode.Single ? ShootMode.Shotgun : ShootMode.Single;
+			SetShootMode(nextMode);
+		}
+
+		private void SwitchToPreviousMode()
+		{
+			ShootMode prevMode = _currentShootMode == ShootMode.Single ? ShootMode.Shotgun : ShootMode.Single;
+			SetShootMode(prevMode);
+		}
+
+		private void SetShootMode(ShootMode mode)
+		{
+			if (_currentShootMode == mode)
+				return;
+
+			_currentShootMode = mode;
+			string modeName = mode == ShootMode.Single ? "Single" : "Shotgun";
+			EventBus.Instance.Publish(new ShootModeChangedEvent((int) mode, modeName));
 		}
 
 		private void OnVacuumPerformed(InputAction.CallbackContext _)
@@ -89,6 +159,7 @@ namespace Game.Client
 		public void UpgradeClipCapacity()
 		{
 			_maxObjects += 1;
+			PublishVacuumedObjectsChanged();
 		}
 
 		public void UpgradeShootForce(float value)
@@ -111,13 +182,18 @@ namespace Game.Client
 			_vacuumRadius += value;
 		}
 
+		private void PublishVacuumedObjectsChanged()
+		{
+			EventBus.Instance.Publish(new VacuumedObjectsChangedEvent(_vacuumedObjects.Count, _maxObjects));
+		}
+
 		private async UniTaskVoid StartVacuum()
 		{
 			CancelVacuum();
 
 			EventBus.Instance.Publish(new VacuumStartedEvent());
 			_isVacuuming = true;
-			
+
 			_vacuumCts = new CancellationTokenSource();
 			var token = _vacuumCts.Token;
 
@@ -153,7 +229,7 @@ namespace Game.Client
 		private void CancelCurrentVacuuming()
 		{
 			_isVacuuming = false;
-			
+
 			foreach (var obj in _currentlyVacuuming)
 			{
 				if (obj != null && !obj.HasReachedTarget)
@@ -216,6 +292,17 @@ namespace Game.Client
 					continue;
 				}
 
+				if (_vacuumedObjects.Count >= _maxObjects)
+				{
+					if (obj != null && !obj.HasReachedTarget)
+					{
+						obj.CancelVacuum();
+					}
+
+					_currentlyVacuuming.RemoveAt(i);
+					continue;
+				}
+
 				if (obj.HasReachedTarget)
 				{
 					obj.SuckIntoPoint(_holdPoint.position);
@@ -223,6 +310,7 @@ namespace Game.Client
 					_vacuumedObjects.Add(obj);
 
 					EventBus.Instance.Publish(new VacuumSuccessEvent());
+					PublishVacuumedObjectsChanged();
 				}
 			}
 		}
@@ -236,19 +324,46 @@ namespace Game.Client
 
 			try
 			{
-				while (_vacuumedObjects.Count > 0 && !token.IsCancellationRequested)
+				if (_currentShootMode == ShootMode.Single)
 				{
-					var obj = _vacuumedObjects[0];
-					_vacuumedObjects.RemoveAt(0);
-
-					if (obj != null)
+					while (_vacuumedObjects.Count > 0 && !token.IsCancellationRequested)
 					{
-						var rb = obj.GetComponent<Rigidbody>();
-						var mass = rb != null ? rb.mass : 1;
-						var force = (mass / _referenceMass) * _shootForce;
-						obj.ShootFromPoint(_holdPoint.position, _camera.transform.forward * force, _collisionReenableDelay, token).Forget();
+						var obj = _vacuumedObjects[0];
+						_vacuumedObjects.RemoveAt(0);
+
+						if (obj != null)
+						{
+							ShootObject(obj, _camera.transform.forward, token);
+							EventBus.Instance.Publish(new ShootEvent());
+							PublishVacuumedObjectsChanged();
+						}
+
+						await UniTask.Delay(TimeSpan.FromSeconds(_shootInterval), cancellationToken: token);
+					}
+				}
+				else if (_currentShootMode == ShootMode.Shotgun)
+				{
+					int objectsToShoot = Mathf.Min(_shotgunProjectileCount, _vacuumedObjects.Count);
+
+					if (objectsToShoot > 0)
+					{
+						for (int i = 0; i < objectsToShoot; i++)
+						{
+							if (_vacuumedObjects.Count == 0)
+								break;
+
+							var obj = _vacuumedObjects[0];
+							_vacuumedObjects.RemoveAt(0);
+
+							if (obj != null)
+							{
+								Vector3 direction = GetShotgunDirection(i, objectsToShoot);
+								ShootObject(obj, direction, token);
+							}
+						}
 
 						EventBus.Instance.Publish(new ShootEvent());
+						PublishVacuumedObjectsChanged();
 					}
 
 					await UniTask.Delay(TimeSpan.FromSeconds(_shootInterval), cancellationToken: token);
@@ -258,6 +373,23 @@ namespace Game.Client
 			{
 				// Стрельба отменена
 			}
+		}
+
+		private Vector3 GetShotgunDirection(int index, int totalCount)
+		{
+			float spreadStep = totalCount > 1 ? _shotgunSpreadAngle / (totalCount - 1) : 0f;
+			float angle = -_shotgunSpreadAngle / 2f + spreadStep * index;
+
+			Quaternion rotation = Quaternion.AngleAxis(angle, _camera.transform.up);
+			return rotation * _camera.transform.forward;
+		}
+
+		private void ShootObject(VacuumedObject obj, Vector3 direction, CancellationToken token)
+		{
+			var rb = obj.GetComponent<Rigidbody>();
+			var mass = rb != null ? rb.mass : 1;
+			var force = (mass / _referenceMass) * _shootForce;
+			obj.ShootFromPoint(_holdPoint.position, direction * force, _collisionReenableDelay, token).Forget();
 		}
 
 		private void CancelShoot()

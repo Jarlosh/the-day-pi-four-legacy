@@ -68,11 +68,6 @@ namespace Game.Client
 				_playerHealth.OnDeath += OnPlayerDeath;
 			}
 		}
-		
-		private void Start()
-		{
-			//StartGame().Forget();
-		}
 
 		private void OnDestroy()
 		{
@@ -246,6 +241,8 @@ namespace Game.Client
 			{
 				health.OnDeath += () => OnEnemyDeath(enemy);
 			}
+			
+			enemy.PlaySpawnAnimation(CancellationToken.None).Forget();
 			
 			EventBus.Instance.Publish(new EnemySpawnedEvent(enemy));
 
