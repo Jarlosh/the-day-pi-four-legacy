@@ -30,7 +30,6 @@ namespace Game.Client
 		private void DestroyWall()
 		{
 			OnDestroyed?.Invoke();
-			gameObject.SetActive(false);
 			Debug.Log("Destroyed wall");
 		}
 	}

@@ -281,4 +281,9 @@ public static class Fragmenter
             i++;
         }
     }
+
+    public static void InvokeFragmenting(GameObject gameObject)
+    {
+        OnFragmentCreated?.Invoke(gameObject);
+    }
 }
