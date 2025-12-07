@@ -881,10 +881,10 @@ MonoBehaviour:
   <SpeedIncreaseMultiplier>k__BackingField: 1.5
   <SlopeIncreaseMultiplier>k__BackingField: 2.5
   <GroundDrag>k__BackingField: 4
-  <State>k__BackingField: 0
+  <State>k__BackingField: 2
   <Sliding>k__BackingField: 0
   <Crouching>k__BackingField: 0
-  <WallRunning>k__BackingField: 1
+  <WallRunning>k__BackingField: 0
   <Climbing>k__BackingField: 0
   <Vaulting>k__BackingField: 0
   <Freeze>k__BackingField: 0
@@ -902,7 +902,7 @@ MonoBehaviour:
   <PlayerHeight>k__BackingField: 2
   <GroundLayer>k__BackingField:
     serializedVersion: 2
-    m_Bits: 385
+    m_Bits: 257
   <MaxSlopeAngle>k__BackingField: 40
   TextSpeed: {fileID: 0}
   TextMode: {fileID: 0}

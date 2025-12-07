@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Game.Client
@@ -10,10 +11,9 @@ namespace Game.Client
 		[SerializeField] private Transform _doorObject; // Объект двери, который поднимается из-под земли
 		[SerializeField] private Vector3 _doorClosedPosition; // Позиция, когда дверь закрыта
 		[SerializeField] private Vector3 _doorOpenPosition; // Позиция, когда дверь открыта (под землей)
-		[SerializeField] private float _doorCloseSpeed = 5f; // Скорость закрытия двери
+		[SerializeField] private float _doorCloseTime = 1f; // Скорость закрытия двери
 		[SerializeField] private LayerMask _playerLayer; // Слой игрока
 		
-		private bool _playerInTrigger = false;
 		private bool _doorClosed = false;
 		
 		protected override void OnInitialize()
@@ -22,7 +22,7 @@ namespace Game.Client
 			
 			if (_doorObject != null)
 			{
-				_doorObject.position = _doorOpenPosition;
+				_doorObject.localPosition = _doorOpenPosition;
 			}
 			
 			if (_triggerZone != null)
@@ -30,7 +30,12 @@ namespace Game.Client
 				_triggerZone.isTrigger = true;
 			}
 		}
-		
+
+		protected override void OnComplete()
+		{
+			CloseDoor().Forget();
+		}
+
 		private void Update()
 		{
 			if (!_isInitialized || _isCompleted)
@@ -48,24 +53,14 @@ namespace Game.Client
 				return;
 			
 			_doorClosed = true;
-			
-			while (Vector3.Distance(_doorObject.position, _doorClosedPosition) > 0.1f)
-			{
-				_doorObject.position = Vector3.MoveTowards(
-					_doorObject.position,
-					_doorClosedPosition,
-					_doorCloseSpeed * Time.deltaTime
-				);
-				
-				await UniTask.Yield();
-			}
-			
-			_doorObject.position = _doorClosedPosition;
+
+			_doorObject.transform.DOLocalMove(_doorClosedPosition, _doorCloseTime);
+			await UniTask.WaitForSeconds(_doorCloseTime);
+			_doorObject.localPosition = _doorClosedPosition;
 		}
 		
 		public void OnPlayerEnteredTrigger()
 		{
-			_playerInTrigger = true;
 			_triggerZone.gameObject.SetActive(false);
 			CloseDoor().Forget();
 		}

@@ -23,6 +23,7 @@ namespace Game.Client
 
 		[field: SerializeField] private float JumpBackForce { get; set; } = 12f;
 		[field: SerializeField] private int ClimbJumps { get; set; } = 1;
+		[field: SerializeField] private InputActionReference JumpInput { get; set; }
 		[field: SerializeField] private KeyCode JumpKey { get; set; } = KeyCode.Space;
 
 		[field: Header("Exiting")]
@@ -54,8 +55,9 @@ namespace Game.Client
 
 		public bool ExitingWall => _exitingWall;
 		public bool IsClimbing => _climbing;
-
-		private void OnValidate()
+		
+		
+		protected override void ManagedInitialize()
 		{
 			_characterMovement = GetComponent<CharacterMovement>();
 		}
@@ -126,7 +128,7 @@ namespace Game.Client
 				}
 			}
 
-			if (_wallFront && Input.GetKeyDown(JumpKey) && _climbJumpsLeft > 0)
+			if (_wallFront && (Input.GetKeyDown(JumpKey) || JumpInput.action.WasPressedThisFrame()) && _climbJumpsLeft > 0)
 			{
 				ClimbJump();
 			}

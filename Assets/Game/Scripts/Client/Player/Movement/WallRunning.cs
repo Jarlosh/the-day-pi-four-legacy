@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Game.Client
 {
@@ -23,6 +24,9 @@ namespace Game.Client
 		[field: SerializeField] private float GravityCounterForce { get; set; } = 27f;
 
 		[field: Header("Input")]
+		[field: SerializeField] private InputActionReference JumpInput { get; set; }
+		[field: SerializeField] private InputActionReference UpwardsRunInput { get; set; }
+		[field: SerializeField] private InputActionReference DownwardsRunInput { get; set; }
 		[field: SerializeField] private KeyCode JumpKey { get; set; } = KeyCode.Space;
 		[field: SerializeField] private KeyCode UpwardsRunKey { get; set; } = KeyCode.LeftShift;
 		[field: SerializeField] private KeyCode DownwardsRunKey { get; set; } = KeyCode.LeftControl;
@@ -52,7 +56,7 @@ namespace Game.Client
 		private bool _wallLeft;
 		private bool _wallRight;
 
-		private void OnValidate()
+		protected override void ManagedInitialize()
 		{
 			_characterMovement = GetComponent<CharacterMovement>();
 		}
@@ -90,8 +94,8 @@ namespace Game.Client
 			_horizontalInput = Input.GetAxisRaw("Horizontal");
 			_verticalInput = Input.GetAxisRaw("Vertical");
 
-			_upwardsRunning = Input.GetKey(UpwardsRunKey);
-			_downwardsRunning = Input.GetKey(DownwardsRunKey);
+			_upwardsRunning = Input.GetKey(UpwardsRunKey) || UpwardsRunInput.action.IsPressed();
+			_downwardsRunning = Input.GetKey(DownwardsRunKey) || DownwardsRunInput.action.IsPressed();
 		}
 
 		private void UpdateState()
@@ -101,7 +105,7 @@ namespace Game.Client
 				return;
 			}
 			
-			if ((_wallLeft || _wallRight) && _verticalInput > 0 && AboveGround() && !_exitingWall)
+			if ((_wallLeft || _wallRight) && Mathf.Abs(_verticalInput) > 0 && AboveGround() && !_exitingWall)
 			{
 				if (!_characterMovement.WallRunning)
 				{
@@ -119,7 +123,7 @@ namespace Game.Client
 					_exitWallTimer = ExitWallTime;
 				}
 
-				if (Input.GetKeyDown(JumpKey))
+				if (Input.GetKeyDown(JumpKey) || JumpInput.action.WasPressedThisFrame())
 				{
 					WallJump();
 				}

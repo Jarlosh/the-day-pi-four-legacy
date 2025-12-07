@@ -28,9 +28,8 @@ namespace Game.Client.App
         {
             ServiceLocator.Register<ILocaleSelectorService>(_localeSelectorService);
             ServiceLocator.Register<ITimeService>(_timeService);
-
             ServiceLocator.Register(_musicManager);
-            
+
             Application.targetFrameRate = 120;
         }
 

@@ -17,7 +17,7 @@ namespace Game.Client
 		private LoadingScreenProvider _loadingScreenProvider = new LoadingScreenProvider();
 		private CancellationTokenSource _gameCancellationSource = new();
 
-		private void OnValidate()
+		private void Start()
 		{
 			Cursor.lockState = CursorLockMode.Confined;
 			Cursor.visible = true;
