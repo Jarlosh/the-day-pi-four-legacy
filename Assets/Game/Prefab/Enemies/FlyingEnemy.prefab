@@ -5030,7 +5030,7 @@ MonoBehaviour:
   _obstacleCheckRadius: 0.5
   _obstacleCheckDistance: 1
   _minHeight: 2
-  _maxHeight: 10
+  _maxHeight: 6
   _maintainHeight: 1
 --- !u!114 &1629865840177198970
 MonoBehaviour:
