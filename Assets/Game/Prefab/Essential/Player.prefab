@@ -49,6 +49,8 @@ MonoBehaviour:
   _holdPoint: {fileID: 7174898791500324783}
   _vacuumAction: {fileID: 0}
   _shootAction: {fileID: 0}
+  _nextModeAction: {fileID: 0}
+  _prevModeAction: {fileID: 0}
   _vacuumRange: 10
   _vacuumRadius: 0.5
   _maxObjects: 5
@@ -60,6 +62,9 @@ MonoBehaviour:
   _shootInterval: 0.2
   _collisionReenableDelay: 0.5
   _referenceMass: 1
+  _currentShootMode: 0
+  _shotgunProjectileCount: 3
+  _shotgunSpreadAngle: 15
 --- !u!114 &3323303320993799005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -756,13 +761,13 @@ MonoBehaviour:
   <Freeze>k__BackingField: 0
   <Unlimited>k__BackingField: 0
   <Restricted>k__BackingField: 0
-  <JumpForce>k__BackingField: 10
+  <JumpForce>k__BackingField: 8
   <JumpCooldown>k__BackingField: 0.25
   <AirMultiplier>k__BackingField: 0.4
   <CrouchSpeed>k__BackingField: 3.5
   <CrouchYScale>k__BackingField: 0.5
   <InputAction>k__BackingField: {fileID: 0}
-  <JumpInputAction>k__BackingField: {fileID: 0}
+  <JumpKey>k__BackingField: 32
   <CrouchInputAction>k__BackingField: {fileID: 0}
   <SprintInputAction>k__BackingField: {fileID: 0}
   <PlayerHeight>k__BackingField: 2

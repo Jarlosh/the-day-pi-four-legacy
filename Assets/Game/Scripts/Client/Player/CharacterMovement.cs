@@ -82,7 +82,7 @@ namespace Game.Client
 
 		[field: Header("Key binds")]
 		[field: SerializeField] public InputActionReference InputAction { get; private set; }
-		[field: SerializeField] public InputActionReference JumpInputAction { get; private set; }
+		[field: SerializeField] public KeyCode JumpKey { get; private set; } = KeyCode.Space;
 		[field: SerializeField] public InputActionReference CrouchInputAction { get; private set; }
 		[field: SerializeField] public InputActionReference SprintInputAction { get; private set; }
 
@@ -129,8 +129,6 @@ namespace Game.Client
 			InputAction.action.performed += OnInputPerformed;
 			InputAction.action.canceled += OnInputCanceled;
 			
-			JumpInputAction.action.performed += OnJumpInputPerformed;
-			
 			CrouchInputAction.action.started += OnCrouchInputStarted;
 			CrouchInputAction.action.canceled += OnCrouchInputCanceled;
 			
@@ -143,7 +141,6 @@ namespace Game.Client
 			InputAction.action.performed -= OnInputPerformed;
 			InputAction.action.canceled -= OnInputCanceled;
 
-			JumpInputAction.action.performed -= OnJumpInputPerformed;
 			
 			CrouchInputAction.action.started -= OnCrouchInputStarted;
 			CrouchInputAction.action.canceled -= OnCrouchInputCanceled;
@@ -165,18 +162,6 @@ namespace Game.Client
 		private void OnCrouchInputCanceled(InputAction.CallbackContext context)
 		{
 			StopCrouch();
-		}
-
-		private void OnJumpInputPerformed(InputAction.CallbackContext context)
-		{
-			if (_canJump && _grounded)
-			{
-				_canJump = false;
-
-				Jump();
-
-				Invoke(nameof(ResetJump), JumpCooldown);
-			}
 		}
 
 		private void OnCrouchInputStarted(InputAction.CallbackContext context)
@@ -203,6 +188,15 @@ namespace Game.Client
 		{
 			HandleGround();
 
+			if (Input.GetKey(JumpKey) && _canJump && _grounded)
+			{
+				_canJump = false;
+
+				Jump();
+
+				Invoke(nameof(ResetJump), JumpCooldown);
+			}
+			
 			SpeedControl();
 			HandleState();
 
