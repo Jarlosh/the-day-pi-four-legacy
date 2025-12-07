@@ -9,13 +9,13 @@ namespace Game.Client
 {
 	public class MeleeAttackBehaviour: MonoBehaviour
 	{
+		[SerializeField] private Health _health;		
 		[Header("Attack Settings")] 
-		[SerializeField]
-		private float _meleeDamage = 5f;
+		[SerializeField] private float _meleeDamage = 5f;
 
-		[SerializeField] private float _attackInterval = 3f; // Интервал между атаками
+		[SerializeField] private float _attackInterval = 3f;
 
-		[Header("Target")] [SerializeField] private LayerMask _playerLayer; // Слой игрока
+		[Header("Target")] [SerializeField] private LayerMask _playerLayer;
 
 		private Collider _triggerCollider;
 		private HashSet<GameObject> _playersInZone = new HashSet<GameObject>();
@@ -30,8 +30,30 @@ namespace Game.Client
 			}
 		}
 
+		private void OnEnable()
+		{
+			_health.OnDeath += OnDeathHandler;
+
+		}
+
+		private void OnDisable()
+		{
+			_health.OnDeath -= OnDeathHandler;
+		}
+
+		private void OnDeathHandler()
+		{
+			_playersInZone.Clear();
+			gameObject.SetActive(false);
+		}
+
 		private void Update()
 		{
+			if(_health.IsDead)
+			{
+				return;
+			}
+			
 			if (_playersInZone.Count > 0 && Time.time >= _lastAttackTime + _attackInterval)
 			{
 				DealDamageToAllPlayers();
@@ -41,6 +63,11 @@ namespace Game.Client
 
 		private void OnTriggerEnter(Collider other)
 		{
+			if(_health.IsDead)
+			{
+				return;
+			}
+			
 			if (IsPlayer(other.gameObject))
 			{
 				_playersInZone.Add(other.transform.root.gameObject);

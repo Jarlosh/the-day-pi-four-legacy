@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edd73bd154de4541881d0ded4c08a16c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game.Client::Game.Client.MeleeAttackBehaviour
+  _health: {fileID: 8774109970526242644}
   _meleeDamage: 5
   _attackInterval: 3
   _playerLayer:
