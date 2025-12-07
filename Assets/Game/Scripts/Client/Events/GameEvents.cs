@@ -50,6 +50,14 @@
 	{
 	}
 	
+	public record EmptyMagazineEvent()
+	{
+	}
+
+	public record FullMagazineEvent()
+	{
+	}
+	
 	public record VacuumStartedEvent()
 	{
 	}

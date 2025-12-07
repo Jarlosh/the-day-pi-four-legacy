@@ -55,6 +55,9 @@ namespace Game.Client
 		private int _extraDamage = 0;
 		private CancellationTokenSource _vacuumCts;
 		private CancellationTokenSource _shootCts;
+		
+		private bool _hasNotifiedFullMagazine = false;
+		private bool _hasNotifiedEmptyMagazine = false;
 
 		public bool IsVacuuming => _isVacuuming;
 		public int VacuumedObjectsCount => _vacuumedObjects.Count;
@@ -211,9 +214,17 @@ namespace Game.Client
 				{
 					if (_vacuumedObjects.Count >= _maxObjects)
 					{
+						if (!_hasNotifiedFullMagazine)
+						{
+							EventBus.Instance.Publish(new FullMagazineEvent());
+							_hasNotifiedFullMagazine = true;
+						}
+
 						await UniTask.Yield(token);
 						continue;
 					}
+					
+					_hasNotifiedFullMagazine = false;
 
 					TryVacuumObjects(token);
 					await UniTask.Yield(token);
@@ -245,7 +256,7 @@ namespace Game.Client
 					obj.CancelVacuum();
 				}
 			}
-
+			
 			_currentlyVacuuming.Clear();
 		}
 
@@ -319,6 +330,12 @@ namespace Game.Client
 
 					EventBus.Instance.Publish(new VacuumSuccessEvent());
 					PublishVacuumedObjectsChanged();
+					
+					if (_vacuumedObjects.Count >= _maxObjects && !_hasNotifiedFullMagazine && _isVacuuming)
+					{
+						EventBus.Instance.Publish(new FullMagazineEvent());
+						_hasNotifiedFullMagazine = true;
+					}
 				}
 			}
 		}
@@ -326,6 +343,12 @@ namespace Game.Client
 		private async UniTaskVoid StartShoot()
 		{
 			CancelShoot();
+			
+			if (_vacuumedObjects.Count == 0)
+			{
+				EventBus.Instance.Publish(new EmptyMagazineEvent());
+				return;
+			}
 
 			_shootCts = new CancellationTokenSource();
 			var token = _shootCts.Token;

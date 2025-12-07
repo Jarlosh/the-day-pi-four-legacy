@@ -52,8 +52,8 @@ MonoBehaviour:
   _nextModeAction: {fileID: 0}
   _prevModeAction: {fileID: 0}
   _vacuumRange: 10
-  _vacuumRadius: 0.5
-  _maxObjects: 5
+  _vacuumRadius: 1.5
+  _maxObjects: 7
   _vacuumLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -94,7 +94,7 @@ MonoBehaviour:
   _raycastDistance: 100
   _raycastLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 385
   _rotationSmoothness: 10
 --- !u!1 &1308212157837321670
 GameObject:
@@ -1299,8 +1299,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game.Client::Game.Client.VacuumGunAudio
   _audioSource: {fileID: 6300588615718363220}
-  _shootClip: {fileID: 8300000, guid: db55c30ad8aed8344be80c91f3485a18, type: 3}
   _shootVolume: 1
+  _shootClip: {fileID: 8300000, guid: db55c30ad8aed8344be80c91f3485a18, type: 3}
+  _shotgunShootSound: {fileID: 8300000, guid: c5bf515b237690b4a8aafb846165cfe3, type: 3}
+  _emptyMagazineSound: {fileID: 8300000, guid: acf0ebc555f1cbe41befefa70ef2ce6d, type: 3}
+  _fullMagazineSound: {fileID: 8300000, guid: e09767f329c30a54ea5c65a918dcd3dc, type: 3}
+  _modeSwitchSound: {fileID: 8300000, guid: 2f6b28f16c2d79d439e27b5dce6100cd, type: 3}
   _vacuumStartClip: {fileID: 8300000, guid: d279b03cd787d184a843643caf3e42fd, type: 3}
   _vacuumStartVolume: 1
   _vacuumLoopClip: {fileID: 8300000, guid: 5b491e6942be23f46987e6861f77c8ed, type: 3}

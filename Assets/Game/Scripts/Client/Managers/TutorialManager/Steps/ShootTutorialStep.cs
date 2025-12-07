@@ -40,6 +40,11 @@ namespace Game.Client
 		private void OnShoot(ShootEvent _)
 		{
 			_shotsCount++;
+
+			if (_shotsCount >= _requiredShots)
+			{
+				Complete();
+			}
 		}
         
 		private void OnWallDestroyed()
