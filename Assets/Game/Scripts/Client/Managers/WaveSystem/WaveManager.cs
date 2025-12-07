@@ -68,11 +68,6 @@ namespace Game.Client
 				_playerHealth.OnDeath += OnPlayerDeath;
 			}
 		}
-		
-		private void Start()
-		{
-			//StartGame().Forget();
-		}
 
 		private void OnDestroy()
 		{

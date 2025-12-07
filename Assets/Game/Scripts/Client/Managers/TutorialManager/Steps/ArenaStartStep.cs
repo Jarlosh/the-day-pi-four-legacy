@@ -2,20 +2,14 @@ using UnityEngine;
 
 namespace Game.Client
 {
-	public class ArenaTutorialStep : TutorialStep
+	public class ArenaStartStep : TutorialStep
 	{
 		[Header("Arena Settings")]
 		[SerializeField] private WaveManager _waveManager;
-		[SerializeField] private GameObject _arenaGate;
         
 		protected override void OnInitialize()
 		{
 			base.OnInitialize();
-			
-			if (_arenaGate != null)
-			{
-				_arenaGate.SetActive(false);
-			}
 			
 			if (_waveManager != null)
 			{
@@ -25,10 +19,15 @@ namespace Game.Client
         
 		protected override void CheckAutoComplete()
 		{
-			if (_waveManager != null && _waveManager.IsGameActive)
+			if (_waveManager != null)
 			{
 				Complete();
 			}
+		}
+
+		protected override void OnComplete()
+		{
+			_waveManager.StartGame().Forget();
 		}
 	}
 }
