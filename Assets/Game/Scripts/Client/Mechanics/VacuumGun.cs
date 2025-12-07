@@ -52,12 +52,15 @@ namespace Game.Client
 		private List<VacuumedObject> _currentlyVacuuming = new List<VacuumedObject>(); // Объекты, которые сейчас всасываются
 
 		private bool _isVacuuming;
+		private int _extraDamage = 0;
 		private CancellationTokenSource _vacuumCts;
 		private CancellationTokenSource _shootCts;
 
 		public bool IsVacuuming => _isVacuuming;
 		public int VacuumedObjectsCount => _vacuumedObjects.Count;
 		public int MaxObjects => _maxObjects;
+
+		public int ExtraDamage => _extraDamage;
 		public ShootMode CurrentShootMode => _currentShootMode;
 
 		private void Awake()
@@ -160,6 +163,11 @@ namespace Game.Client
 		{
 			_maxObjects += 1;
 			PublishVacuumedObjectsChanged();
+		}
+		
+		public void UpgradeDamage(int value)
+		{
+			_extraDamage += value;
 		}
 
 		public void UpgradeShootForce(float value)
@@ -386,6 +394,8 @@ namespace Game.Client
 
 		private void ShootObject(VacuumedObject obj, Vector3 direction, CancellationToken token)
 		{
+			obj.SetExtraDamage(_extraDamage);
+			
 			var rb = obj.GetComponent<Rigidbody>();
 			var mass = rb != null ? rb.mass : 1;
 			var force = (mass / _referenceMass) * _shootForce;

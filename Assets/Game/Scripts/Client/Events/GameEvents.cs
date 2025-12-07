@@ -65,6 +65,10 @@
 	public record ShootEvent()
 	{
 	}
+
+	public record PickUpUpgrade()
+	{
+	}
 	
 	public record VacuumedObjectsChangedEvent(int CurrentCount, int MaxCount)
 	{

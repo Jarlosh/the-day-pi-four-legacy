@@ -38,6 +38,8 @@ namespace Game.Client
 		private CancellationTokenSource _vacuumCts;
 		private CancellationTokenSource _collisionReenableCts;
 
+		private int _extraDamage = 0;
+		
 		public bool IsVacuumed => _isVacuumed;
 		public bool HasReachedTarget => _hasReachedTarget;
 
@@ -68,11 +70,13 @@ namespace Game.Client
 
 			if ((_damageableLayers.value & (1 << collision.gameObject.layer)) == 0)
 				return;
+			
+			var damage = _damage + _extraDamage;
 
 			var health = collision.gameObject.GetComponent<IDamageable>();
 			if (health != null)
 			{
-				health.TakeDamage(_damage);
+				health.TakeDamage(damage);
 				_canDealDamage = false;
 				return;
 			}
@@ -80,9 +84,14 @@ namespace Game.Client
 			var hitHandler = collision.gameObject.GetComponent<IHitHandler>();
 			if (hitHandler != null)
 			{
-				hitHandler.TakeDamage(_damage);
+				hitHandler.TakeDamage(damage);
 				_canDealDamage = false;
 			}
+		}
+
+		public void SetExtraDamage(int value)
+		{
+			_extraDamage = value;
 		}
 
 		public async UniTaskVoid StartVacuum(Transform targetPoint, float attractionDistance, CancellationToken token)

@@ -9,13 +9,15 @@ namespace Game.Client
         [SerializeField] private CharacterMovement _characterMovement;
         [SerializeField] private Sliding _sliding;
         [SerializeField] private AudioSource _audioSource;
+        [SerializeField] private AudioSource _secondSource;
         
         [Header("Sound Lists")]
-        [SerializeField] private List<AudioClip> _slideSounds = new List<AudioClip>();
-        [SerializeField] private List<AudioClip> _jumpStartSounds = new List<AudioClip>();
-        [SerializeField] private List<AudioClip> _landingSounds = new List<AudioClip>();
-        [SerializeField] private List<AudioClip> _footstepSounds = new List<AudioClip>();
-        
+        [SerializeField] private List<AudioClip> _slideSounds = new();
+        [SerializeField] private List<AudioClip> _jumpStartSounds = new();
+        [SerializeField] private List<AudioClip> _landingSounds = new ();
+        [SerializeField] private List<AudioClip> _footstepSounds = new();
+        [SerializeField] private AudioClip _upgradeSound;
+
         [Header("Pitch Settings")]
         [SerializeField] private float _pitchRandomRange = 0.2f; // Диапазон случайного изменения pitch (±0.2)
         [SerializeField] private float _basePitch = 1f; // Базовый pitch
@@ -55,13 +57,20 @@ namespace Game.Client
         private void OnEnable()
         {
             EventBus.Instance.Subscribe<PlayerJumpedEvent>(OnPlayerJumped);
+            EventBus.Instance.Subscribe<PickUpUpgrade>(OnPickUpUpgrade);
         }
         
         private void OnDisable()
         {
+            EventBus.Instance.Unsubscribe<PickUpUpgrade>(OnPickUpUpgrade);
             EventBus.Instance.Unsubscribe<PlayerJumpedEvent>(OnPlayerJumped);
         }
-        
+
+        private void OnPickUpUpgrade(PickUpUpgrade upd)
+        {
+            _secondSource.PlayOneShot(_upgradeSound);
+        }
+
         private void OnPlayerJumped(PlayerJumpedEvent _)
         {
             PlayJumpStartSound();
