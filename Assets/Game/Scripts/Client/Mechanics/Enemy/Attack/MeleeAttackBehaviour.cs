@@ -20,6 +20,8 @@ namespace Game.Client
 		private Collider _triggerCollider;
 		private HashSet<GameObject> _playersInZone = new HashSet<GameObject>();
 		private float _lastAttackTime;
+		
+		public event Action OnAttack;
 
 		private void Awake()
 		{
@@ -33,7 +35,6 @@ namespace Game.Client
 		private void OnEnable()
 		{
 			_health.OnDeath += OnDeathHandler;
-
 		}
 
 		private void OnDisable()
@@ -122,6 +123,8 @@ namespace Game.Client
 			var damageable = playerObj.GetComponentInChildren<IDamageable>();
 			if (damageable != null)
 			{
+				OnAttack?.Invoke();
+				
 				damageable.TakeDamage(_meleeDamage);
 				Debug.Log($"[MeleeAttackZone] Нанесено {_meleeDamage} урона игроку");
 				return;
@@ -131,6 +134,8 @@ namespace Game.Client
 			var hitHandler = playerObj.GetComponentInChildren<IHitHandler>();
 			if (hitHandler != null)
 			{
+				OnAttack?.Invoke();
+				
 				hitHandler.TakeDamage(_meleeDamage);
 				Debug.Log($"[MeleeAttackZone] Нанесено {_meleeDamage} урона игроку через IHitHandler");
 				return;
@@ -140,6 +145,8 @@ namespace Game.Client
 			var health = playerObj.GetComponentInChildren<Health>();
 			if (health != null)
 			{
+				OnAttack?.Invoke();
+				
 				health.TakeDamage(_meleeDamage);
 				Debug.Log($"[MeleeAttackZone] Нанесено {_meleeDamage} урона игроку через Health");
 				return;
