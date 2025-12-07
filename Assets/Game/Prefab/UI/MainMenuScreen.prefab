@@ -3726,7 +3726,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Georg Kuuz
+  m_text: Georg Kuuzik
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 46a677e560f03de43a0705f18536cc8f, type: 2}
   m_sharedMaterial: {fileID: 5126911575969567221, guid: 46a677e560f03de43a0705f18536cc8f, type: 2}
@@ -6956,7 +6956,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 5094288241699784573}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.43366668
+  m_Size: 0.6681333
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
