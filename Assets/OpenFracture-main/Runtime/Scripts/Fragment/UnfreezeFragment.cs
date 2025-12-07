@@ -78,6 +78,7 @@ public class UnfreezeFragment : MonoBehaviour
     private void UnfreezeThis()
     {
         this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-        this.isFrozen = false;   
+        this.isFrozen = false;
+        Fragmenter.InvokeFragmenting(gameObject);
     }
 }
