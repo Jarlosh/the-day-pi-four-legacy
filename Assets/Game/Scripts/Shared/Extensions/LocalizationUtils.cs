@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Localization;
+﻿using UnityEngine.Localization;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Localization.Tables;
@@ -14,44 +12,50 @@ namespace Game.Shared
         
         public static async UniTask<string> GetLocalizedString(LocalizedString localizedString)
         {
-            string result = string.Empty;
+            if (localizedString == null)
+            {
+                return string.Empty;
+            }
+
+            var keyId = localizedString.TableEntryReference;
             
+            if (_stringCache.TryGetValue(keyId, out string cachedString))
+            {
+                return cachedString;
+            }
+
+            if (_stringLoadTasks.TryGetValue(keyId, out var existingTask))
+            {
+                var result = await existingTask;
+                
+                if (!string.IsNullOrEmpty(result))
+                {
+                    _stringCache[keyId] = result;
+                }
+                _stringLoadTasks.Remove(keyId);
+                
+                return result;
+            }
+
+            var loadTask = GetStringFromLocalizedString(localizedString);
+            _stringLoadTasks[keyId] = loadTask;
+
             try
             {
-                if (localizedString == null)
+                var result = await loadTask;
+                
+                if (!string.IsNullOrEmpty(result))
                 {
-                    return string.Empty;
+                    _stringCache[keyId] = result;
                 }
-
-                var keyId = localizedString.TableEntryReference;
-                if (_stringCache.TryGetValue(keyId, out string cachedString))
-                {
-                    UnityEngine.Debug.Log($"LocalizationUtility: Using cached row from cache: {keyId}");
-                    return cachedString;
-                }
-
-                if (_stringLoadTasks.TryGetValue(keyId, out var existingTask))
-                {
-                    UnityEngine.Debug.Log($"LocalizationUtility: Using cached task to load row: {keyId}");
-                    return await existingTask;
-                }
-
-                UnityEngine.Debug.Log($"LocalizationUtility: Loading rowId: {keyId}");
-
-                var loadTask = GetStringFromLocalizedString(localizedString);
-
-                _stringLoadTasks[keyId] = loadTask;
-
-                result = await loadTask;
-
-                _stringCache[keyId] = result;
+                
+                return result;
             }
-            catch (Exception e)
+            finally
             {
-                Console.WriteLine(e);
+                // Удаляем задачу из словаря после завершения
+                _stringLoadTasks.Remove(keyId);
             }
-
-            return result;
         }
 
         private static async UniTask<string> GetStringFromLocalizedString(LocalizedString localizedString)

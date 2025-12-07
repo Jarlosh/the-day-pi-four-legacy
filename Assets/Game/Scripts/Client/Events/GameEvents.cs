@@ -6,7 +6,7 @@
 		Defeat
 	}
     
-	public record WaveStartedEvent(int WaveNumber, int TotalWaves)
+	public record WaveStartedEvent(int WaveNumber, int TotalWaves, int MaxEnemiesInWave)
 	{
 	}
 

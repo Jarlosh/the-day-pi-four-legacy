@@ -89,7 +89,7 @@ namespace Game.Client
 			ShowResult(gameEvent.Results);
 		}
 
-		private void ShowResult(GameResults result)
+		private async void ShowResult(GameResults result)
 		{
 			if (_resultPanel != null)
 			{
@@ -98,21 +98,35 @@ namespace Game.Client
 
 			if (_resultTitleText != null)
 			{
-				_resultTitleText.text = result == GameResults.Win
-					? LocalizationUtils.GetLocalizedString(_winTitle).ToString()
-					: LocalizationUtils.GetLocalizedString(_defeatTitle).ToString();
+				string str;
+				
+				if (result == GameResults.Win)
+				{
+					str = await LocalizationUtils.GetLocalizedString(_winTitle);
+				}
+				else
+				{
+					str = await LocalizationUtils.GetLocalizedString(_defeatTitle);
+				}
+				
+				_resultTitleText.text = str;
+
 			}
 
 			if (_scoreText != null && _styleSystem != null)
 			{
 				var totalScore = Mathf.CeilToInt(_styleSystem.TotalScore);
-				_scoreText.text = string.Format(LocalizationUtils.GetLocalizedString(_scoreFormat).ToString(), totalScore);
+				var str = await LocalizationUtils.GetLocalizedString(_scoreFormat);
+				
+				_scoreText.text = string.Format(str, totalScore);
 			}
 			
 			if (_suckedObjectsFormat != null && _styleSystem != null)
 			{
 				var totalScore = Mathf.CeilToInt(_styleSystem.VacuumedObjectsCount);
-				_suckedObjectText.text = string.Format(LocalizationUtils.GetLocalizedString(_suckedObjectsFormat).ToString(), totalScore);
+				var str = await LocalizationUtils.GetLocalizedString(_suckedObjectsFormat);
+				
+				_suckedObjectText.text = string.Format(str, totalScore);
 			}
 		}
 

@@ -115,7 +115,7 @@ namespace Game.Client
 					if (token.IsCancellationRequested)
 						break;
 
-					EventBus.Instance.Publish(new WaveStartedEvent(_currentWaveNumber, TotalWaves));
+					EventBus.Instance.Publish(new WaveStartedEvent(_currentWaveNumber, TotalWaves, waveData.MaxEnemiesInWave));
 					await StartWave(waveData, token);
 
 					if (token.IsCancellationRequested)

@@ -61,12 +61,21 @@ namespace Game.Client.UI
 			UpdateMode(_currentMode);
 		}
         
-		private void UpdateMode(VacuumGun.ShootMode mode)
+		private async void UpdateMode(VacuumGun.ShootMode mode)
 		{
 			if (_modeText == null)
 				return;
-            
-			string modeName = mode == VacuumGun.ShootMode.Single ? LocalizationUtils.GetLocalizedString(_singleModeName).ToString() : LocalizationUtils.GetLocalizedString(_shotgunModeName).ToString();
+			
+			string modeName;
+			if (mode == VacuumGun.ShootMode.Single)
+			{
+				modeName = await LocalizationUtils.GetLocalizedString(_singleModeName);
+			}
+			else
+			{
+				modeName = await LocalizationUtils.GetLocalizedString(_shotgunModeName);
+			}
+
 			_modeText.text = string.Format(_modeFormat, modeName);
 		}
 	}

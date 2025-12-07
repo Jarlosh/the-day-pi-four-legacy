@@ -26,7 +26,8 @@ namespace Game.Client.UI
 
 		private float _countdownTimer;
 		private bool _isCountingDown;
-		private int _currentEnemiesCount;
+		private int _maxEnemiesInWave = 0;
+		private int _enemiesKilled = 0;
 
 		protected override void Init()
 		{
@@ -36,7 +37,7 @@ namespace Game.Client.UI
 			}
 
 			UpdateWaveInfo();
-			UpdateEnemiesCount(0);
+			UpdateEnemiesCount();
 
 			if (_timerText != null)
 			{
@@ -51,6 +52,7 @@ namespace Game.Client.UI
 			EventBus.Instance.Subscribe<WaveStartedEvent>(OnWaveStarted);
 			EventBus.Instance.Subscribe<WaveCompletedEvent>(OnWaveCompleted);
 			EventBus.Instance.Subscribe<CountdownEvent>(OnCountdown);
+			EventBus.Instance.Subscribe<EnemyDeathEvent>(OnEnemyDeath);
 			
 			LocalizationSettings.SelectedLocaleChanged += OnSelectedLocaleChanged;
 		}
@@ -62,6 +64,7 @@ namespace Game.Client.UI
 			EventBus.Instance.Unsubscribe<WaveStartedEvent>(OnWaveStarted);
 			EventBus.Instance.Unsubscribe<WaveCompletedEvent>(OnWaveCompleted);
 			EventBus.Instance.Unsubscribe<CountdownEvent>(OnCountdown);
+			EventBus.Instance.Unsubscribe<EnemyDeathEvent>(OnEnemyDeath);
 			
 			LocalizationSettings.SelectedLocaleChanged -= OnSelectedLocaleChanged;
 		}
@@ -69,7 +72,7 @@ namespace Game.Client.UI
 		private void OnSelectedLocaleChanged(Locale locale)
 		{
 			UpdateWaveInfo();
-			UpdateEnemiesCount(_waveManager.GetActiveEnemiesCount());
+			UpdateEnemiesCount();
 		}
 
 		private void Update()
@@ -79,7 +82,7 @@ namespace Game.Client.UI
 				return;
 			}
 
-			UpdateEnemiesCount(_waveManager.GetActiveEnemiesCount());
+			UpdateEnemiesCount();
 
 			if (_isCountingDown && _showTimer)
 			{
@@ -91,7 +94,10 @@ namespace Game.Client.UI
 		private void OnWaveStarted(WaveStartedEvent waveEvent)
 		{
 			_isCountingDown = false;
+			_maxEnemiesInWave = waveEvent.MaxEnemiesInWave;
+			_enemiesKilled = 0;
 			UpdateWaveInfo();
+			UpdateEnemiesCount();
 
 			if (_timerText != null && _showTimer)
 			{
@@ -102,6 +108,12 @@ namespace Game.Client.UI
 		private void OnWaveCompleted(WaveCompletedEvent waveEvent)
 		{
 			UpdateWaveInfo();
+		}
+		
+		private void OnEnemyDeath(EnemyDeathEvent deathEvent)
+		{
+			_enemiesKilled++;
+			UpdateEnemiesCount();
 		}
 
 		private void OnCountdown(CountdownEvent countdownEvent)
@@ -116,28 +128,30 @@ namespace Game.Client.UI
 			}
 		}
 
-		private void UpdateWaveInfo()
+		private async void UpdateWaveInfo()
 		{
 			if (_waveManager == null)
 				return;
 
 			if (_waveNumberText != null)
 			{
-				_waveNumberText.text = string.Format(
-					LocalizationUtils.GetLocalizedString(_waveFormat).ToString(),
+				var str = await LocalizationUtils.GetLocalizedString(_waveFormat);
+				_waveNumberText.text = string.Format(str
+					.ToString(),
 					_waveManager.CurrentWaveNumber,
 					_waveManager.TotalWaves
 				);
 			}
 		}
 
-		private void UpdateEnemiesCount(int count)
+		private async void UpdateEnemiesCount()
 		{
-			_currentEnemiesCount = count;
+			int remaining = Mathf.Max(0, _maxEnemiesInWave - _enemiesKilled);
 
 			if (_enemiesRemainingText != null)
 			{
-				_enemiesRemainingText.text = string.Format(LocalizationUtils.GetLocalizedString(_enemiesFormat).ToString(), count);
+				var str = await LocalizationUtils.GetLocalizedString(_enemiesFormat);
+				_enemiesRemainingText.text = string.Format(str, remaining);
 			}
 		}
 
