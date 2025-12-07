@@ -17,6 +17,11 @@ namespace Game.Client
 		[SerializeField] private LayerMask _obstacleLayerMask;
 		[SerializeField] private float _laserWidth = 0.5f; // Ширина лазера для проверки попадания
 
+		[Header("Audio")]
+		[SerializeField] private AudioSource _laserAudioSource;
+		[SerializeField] private AudioClip _laserLoopClip;
+		[SerializeField] private float _laserVolume = 1f;
+		
 		[Header("Visual - Main Laser")] 
 		[SerializeField] private LineRenderer _laserRenderer;
 
@@ -64,12 +69,32 @@ namespace Game.Client
 		{
 			SetupLaserRenderers();
 			SetupParticles();
+			SetupAudio();
 
 			if (_spawnPoint == null)
 			{
 				_spawnPoint = transform;
 			}
 		}
+		
+		private void SetupAudio()
+		{
+			if (_laserAudioSource == null)
+			{
+				var go = new GameObject("LaserAudio");
+				go.transform.SetParent(transform);
+				_laserAudioSource = go.AddComponent<AudioSource>();
+			}
+
+			if (_laserAudioSource != null)
+			{
+				_laserAudioSource.loop = true;
+				_laserAudioSource.volume = _laserVolume;
+				_laserAudioSource.spatialBlend = 1f;
+				_laserAudioSource.playOnAwake = false;
+			}
+		}
+
 
 		public void Initialize(Enemy enemy, Transform target)
 		{
@@ -297,6 +322,19 @@ namespace Game.Client
 			{
 				_impactParticles.Stop();
 				_impactParticles.gameObject.SetActive(false);
+			}
+			
+			if (_laserAudioSource != null && _laserLoopClip != null)
+			{
+				if (enable)
+				{
+					_laserAudioSource.clip = _laserLoopClip;
+					_laserAudioSource.Play();
+				}
+				else
+				{
+					_laserAudioSource.Stop();
+				}
 			}
 		}
 
