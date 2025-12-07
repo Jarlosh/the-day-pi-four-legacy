@@ -49,6 +49,10 @@ namespace Game.Client
 
 			_rigidbody = GetComponent<Rigidbody>();
 
+			var pos = transform.position;
+			pos.y = Mathf.Clamp(pos.y, _minHeight, _maxHeight);
+			transform.position = pos;
+			
 			if (_rigidbody != null)
 			{
 				_rigidbody.isKinematic = true;
