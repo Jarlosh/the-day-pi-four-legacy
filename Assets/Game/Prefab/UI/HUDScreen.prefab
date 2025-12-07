@@ -781,55 +781,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1763859385174727659, guid: 3c07e54d7d022b04bab3b27dcea34ff5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 9057526977541099066}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c07e54d7d022b04bab3b27dcea34ff5, type: 3}
---- !u!1 &596343646177022584 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1763859385174727659, guid: 3c07e54d7d022b04bab3b27dcea34ff5, type: 3}
-  m_PrefabInstance: {fileID: 1170055886016956819}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &9057526977541099066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 596343646177022584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: badc6e787ec843448a70d45bbd36ef7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Game.Client::Game.Client.UI.WaveInfoView
-  _waveManager: {fileID: 0}
-  _waveNumberText: {fileID: 0}
-  _enemiesRemainingText: {fileID: 0}
-  _timerText: {fileID: 0}
-  _waveFormat:
-    m_TableReference:
-      m_TableCollectionName: 
-    m_TableEntryReference:
-      m_KeyId: 0
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  _enemiesFormat:
-    m_TableReference:
-      m_TableCollectionName: 
-    m_TableEntryReference:
-      m_KeyId: 0
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  _timerFormat: '{0:0}'
-  _showTimer: 1
-  references:
-    version: 2
-    RefIds: []
 --- !u!224 &8765354458908442212 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7608854460621322231, guid: 3c07e54d7d022b04bab3b27dcea34ff5, type: 3}
