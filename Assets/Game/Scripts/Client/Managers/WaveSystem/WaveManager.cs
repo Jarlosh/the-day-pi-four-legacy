@@ -242,6 +242,8 @@ namespace Game.Client
 				health.OnDeath += () => OnEnemyDeath(enemy);
 			}
 			
+			enemy.PlaySpawnAnimation(CancellationToken.None).Forget();
+			
 			EventBus.Instance.Publish(new EnemySpawnedEvent(enemy));
 
 			return enemy;
