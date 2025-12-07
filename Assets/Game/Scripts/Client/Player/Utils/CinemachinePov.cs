@@ -23,6 +23,8 @@ namespace Game.Core
 
 		[field: SerializeField] private InputActionReference _inputAction; 
 		
+		private const string SensitivityKey = "MouseSensitivity";
+		private float _sensitivityMultiplier = 1f;
 		private Vector3 _startingRotation;
 		private Vector2 _lookInput;
 		
@@ -30,13 +32,22 @@ namespace Game.Core
 		{
 			_inputAction.action.performed += OnInputPerformed;
 			_inputAction.action.canceled += OnInputCanceled;
+			
+			LoadSensitivity();
 		}
 
 		private void OnDisable()
 		{
 			_inputAction.action.performed -= OnInputPerformed;
 			_inputAction.action.canceled -= OnInputCanceled;
-
+		}
+		
+		private void LoadSensitivity()
+		{
+			_sensitivityMultiplier = PlayerPrefs.GetFloat(SensitivityKey, 0.5f);
+			
+			SensitivityX = _sensitivityMultiplier * 50f;
+			SensitivityY = _sensitivityMultiplier * 50f;
 		}
 
 		private void OnInputCanceled(InputAction.CallbackContext context)

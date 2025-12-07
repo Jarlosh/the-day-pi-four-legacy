@@ -70,6 +70,10 @@ MonoBehaviour:
     m_Key: Label_Pause
     m_Metadata:
       m_Items: []
+  - m_Id: 1161636831920128
+    m_Key: Label_Sensitivity
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

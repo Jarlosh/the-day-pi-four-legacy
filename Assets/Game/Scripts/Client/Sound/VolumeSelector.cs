@@ -1,8 +1,5 @@
-﻿using System;
-using System.Reflection;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 namespace Game.Client
