@@ -14,6 +14,8 @@ namespace Game.Client
 		[SerializeField, ExposedScriptableObject(false)] private StyleRankSettings _styleSettings;
 
 		[Header("Settings")] 
+		[SerializeField] private float _pointsPerVacuum = 1f;
+		[SerializeField] private float _pointsPerSlide = 3f;
 		[SerializeField] private float _pointsPerHit = 10f;
 		[SerializeField] private float _pointsPerKill = 50f;
 		[SerializeField] private float _decayDelay = 3f;
@@ -22,6 +24,7 @@ namespace Game.Client
 
 		private float _currentMeter = 0f;
 		private int _currentRankIndex = 0;
+		private int _vacuumedObjectsCount = 0;
 		private float _totalPoints = 0f;
 		private float _totalScore = 0f;
 		private float _decayTimer = 0f;
@@ -31,6 +34,7 @@ namespace Game.Client
 		public float CurrentMeter => _currentMeter;
 		public int CurrentRankIndex => _currentRankIndex;
 		public float TotalScore => _totalScore;
+		public int VacuumedObjectsCount => _vacuumedObjectsCount;
 		public StyleRank CurrentRank => _styleSettings != null ? _styleSettings.GetRank(_currentRankIndex) : null;
 
 		private void Awake()
@@ -95,6 +99,17 @@ namespace Game.Client
 		{
 			AddPoints(_pointsPerKill);
 		}
+		
+		public void AddPointsForVacuum()
+		{
+			_vacuumedObjectsCount++;
+			AddPoints(_pointsPerVacuum);
+		}
+		
+		public void AddPointsForSlide()
+		{
+			AddPoints(_pointsPerSlide);
+		}
 
 		private void AddPoints(float points)
 		{
@@ -117,16 +132,13 @@ namespace Game.Client
 			float pointsForCurrentRank = _currentRankIndex * _pointsToNextRank;
 			float pointsInCurrentRank = _totalPoints - pointsForCurrentRank;
     
-			// Обновляем шкалу
 			_currentMeter = Mathf.Clamp01(pointsInCurrentRank / _pointsToNextRank);
     
-			// Проверяем, нужно ли повысить ранг
 			if (_currentMeter >= 1f && _currentRankIndex < _styleSettings.GetRankCount() - 1)
 			{
 				IncreaseRank();
 			}
     
-			// Публикуем события
 			EventBus.Instance.Publish(new StylePointsAddedEvent(points, _totalPoints));
 			EventBus.Instance.Publish(new StyleScoreChangedEvent(_totalScore));
 			EventBus.Instance.Publish(new StyleMeterChangedEvent(_currentMeter, _currentRankIndex));
@@ -192,6 +204,7 @@ namespace Game.Client
 			_totalScore = 0f;
 			_decayTimer = 0f;
 			_isDecaying = false;
+			_vacuumedObjectsCount = 0;
 
 			if (_styleSettings != null)
 			{
@@ -199,6 +212,7 @@ namespace Game.Client
 				EventBus.Instance.Publish(new StyleRankChangedEvent(_currentRankIndex, rank.RankName, rank.Multiplier));
 				EventBus.Instance.Publish(new StyleMeterChangedEvent(_currentMeter, _currentRankIndex));
 				EventBus.Instance.Publish(new StyleScoreChangedEvent(_totalScore));
+				EventBus.Instance.Publish(new StyleScoreChangedEvent(_vacuumedObjectsCount));
 			}
 		}
 	}

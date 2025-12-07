@@ -58,6 +58,18 @@ MonoBehaviour:
     m_Localized: Eng
     m_Metadata:
       m_Items: []
+  - m_Id: 1062925254623232
+    m_Localized: To Main Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1062925263011840
+    m_Localized: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1062925263011841
+    m_Localized: Pause
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

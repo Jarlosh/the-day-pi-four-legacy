@@ -35,6 +35,22 @@ MonoBehaviour:
     m_Key: Label_Speed
     m_Metadata:
       m_Items: []
+  - m_Id: 46121761734656
+    m_Key: Label_TotalScore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46121786900480
+    m_Key: Label_GameResult_Win
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46121786900481
+    m_Key: Label_GameResult_Defeat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54416861921280
+    m_Key: Label_Sucked_Objects
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

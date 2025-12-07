@@ -14,9 +14,8 @@
 	{
 	}
 
-	public record GameCancelEvent(GameResults Results)
+	public record GameCancelEvent(GameResults Results, float FinalScore = 0f)
 	{
-		
 	}
 
 	public record CountdownEvent(int Seconds)
@@ -44,6 +43,10 @@
 	}
     
 	public record StyleMeterChangedEvent(float MeterValue, int CurrentRankIndex)
+	{
+	}
+	
+	public record SlidePerformedEvent()
 	{
 	}
 	

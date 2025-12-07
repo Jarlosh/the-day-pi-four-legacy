@@ -58,6 +58,18 @@ MonoBehaviour:
     m_Key: Label_Language_Eng
     m_Metadata:
       m_Items: []
+  - m_Id: 1062925254623232
+    m_Key: Button_ToMainMenu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1062925263011840
+    m_Key: Button_Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1062925263011841
+    m_Key: Label_Pause
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

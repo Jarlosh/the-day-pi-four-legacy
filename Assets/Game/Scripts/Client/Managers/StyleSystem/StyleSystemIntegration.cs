@@ -24,14 +24,18 @@ namespace Game.Client
         {
             EventBus.Instance.Subscribe<EnemySpawnedEvent>(OnEnemySpawned);
             EventBus.Instance.Subscribe<EnemyDeathEvent>(OnEnemyDeath);
+            EventBus.Instance.Subscribe<VacuumSuccessEvent>(OnVacuumSuccess);
+            EventBus.Instance.Subscribe<SlidePerformedEvent>(OnSlidePerformed);
         }
         
         private void OnDisable()
         {
             EventBus.Instance.Unsubscribe<EnemySpawnedEvent>(OnEnemySpawned);
             EventBus.Instance.Unsubscribe<EnemyDeathEvent>(OnEnemyDeath);
+            EventBus.Instance.Unsubscribe<VacuumSuccessEvent>(OnVacuumSuccess);
+            EventBus.Instance.Unsubscribe<SlidePerformedEvent>(OnSlidePerformed);
         }
-        
+
         private void OnEnemySpawned(EnemySpawnedEvent spawnEvent)
         {
             if (_styleSystem == null || spawnEvent.Enemy == null)
@@ -65,6 +69,22 @@ namespace Game.Client
             if (_styleSystem != null)
             {
                 _styleSystem.AddPointsForHit();
+            }
+        }
+        
+        private void OnSlidePerformed(SlidePerformedEvent ev)
+        {
+            if (_styleSystem != null)
+            {
+                _styleSystem.AddPointsForSlide();
+            }
+        }
+
+        private void OnVacuumSuccess(VacuumSuccessEvent ev)
+        {
+            if (_styleSystem != null)
+            {
+                _styleSystem.AddPointsForVacuum();
             }
         }
     }

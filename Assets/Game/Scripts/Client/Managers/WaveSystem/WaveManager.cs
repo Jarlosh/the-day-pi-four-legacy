@@ -278,18 +278,50 @@ namespace Game.Client
 		{
 			_isGameActive = false;
 			_waveCts?.Cancel();
+			
+			ClearAllEnemies();
+			
+			float finalScore = 0f;
+			var styleSystem = ServiceLocator.Get<StyleSystem>();
+			
+			if (styleSystem != null)
+			{
+				finalScore = styleSystem.TotalScore;
+			}
 
 			if (won)
 			{
-				EventBus.Instance.Publish(new GameCancelEvent(GameResults.Win));
+				EventBus.Instance.Publish(new GameCancelEvent(GameResults.Win, finalScore));
 				Debug.Log("Победа! Все волны пройдены!");
 			}
 			else
 			{
-				EventBus.Instance.Publish(new GameCancelEvent(GameResults.Defeat));
+				EventBus.Instance.Publish(new GameCancelEvent(GameResults.Defeat, finalScore));
 				Debug.Log("Поражение! Игрок умер!");
 			}
 		}
+		
+		private void ClearAllEnemies()
+        {
+        	foreach (var enemy in _activeEnemies)
+        	{
+        		if (enemy != null)
+        		{
+        			Destroy(enemy.gameObject);
+        		}
+        	}
+        	
+        	_activeEnemies.Clear();
+        	
+        	var allEnemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
+        	foreach (var enemy in allEnemies)
+        	{
+        		if (enemy != null)
+        		{
+        			Destroy(enemy.gameObject);
+        		}
+        	}
+        }
 
 		private void OnDrawGizmos()
 		{

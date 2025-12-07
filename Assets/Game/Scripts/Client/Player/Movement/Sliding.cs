@@ -75,6 +75,8 @@ namespace Game.Client
 			Rigidbody.AddForce(Vector3.down * (100f * Rigidbody.mass), ForceMode.Impulse);
 
 			_slideTimer = MaxSlideTime;
+			
+			EventBus.Instance.Publish(new SlidePerformedEvent());
 		}
 
 		private void ProcessSlidingMovement()
