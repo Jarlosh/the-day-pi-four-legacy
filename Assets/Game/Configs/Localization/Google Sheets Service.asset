@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Localization.Editor::UnityEditor.Localization.Plugins.Google.SheetsServiceProvider
   m_ApiKey: 
   m_ClientId: 257824320524-pmutj2sesnouf9rtk4pc347k9ssnii3d.apps.googleusercontent.com
-  m_ClientSecret: 
+  m_ClientSecret: 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
   m_AuthenticationType: 1
   m_ApplicationName: katana-jam
   m_NewSheetProperties:

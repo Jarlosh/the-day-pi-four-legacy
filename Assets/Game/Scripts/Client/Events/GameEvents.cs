@@ -62,6 +62,14 @@
 	public record ShootEvent()
 	{
 	}
+	
+	public record VacuumedObjectsChangedEvent(int CurrentCount, int MaxCount)
+	{
+	}
+
+	public record ShootModeChangedEvent(int ModeIndex, string ModeName)
+	{
+	}
 
 	public record GameMusicStateChangedEvent(GameMusicState NewState)
 	{

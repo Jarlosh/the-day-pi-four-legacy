@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48ac52be9bf787c42b3ca8afd00b1346
+    m_Address: Assets/Game/Configs/Localization/Tables/Hud Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: a94d01cdb8f1b214c8e058de59c5caac, type: 2}
   m_SchemaSet:
