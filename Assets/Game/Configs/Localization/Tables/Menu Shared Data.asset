@@ -34,6 +34,30 @@ MonoBehaviour:
     m_Key: Label_Loading
     m_Metadata:
       m_Items: []
+  - m_Id: 1023496469184512
+    m_Key: Button_Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1023496498544640
+    m_Key: Label_Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1023622063423488
+    m_Key: Button_Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1031925086650368
+    m_Key: Label_Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1032496883531776
+    m_Key: Label_Language_Rus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1032496883531777
+    m_Key: Label_Language_Eng
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

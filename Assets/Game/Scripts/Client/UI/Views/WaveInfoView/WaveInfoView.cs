@@ -1,6 +1,9 @@
 ﻿using Game.Core;
+using Game.Shared;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 
 namespace Game.Client.UI
 {
@@ -15,8 +18,9 @@ namespace Game.Client.UI
 		[SerializeField] private TextMeshProUGUI _enemiesRemainingText;
 		[SerializeField] private TextMeshProUGUI _timerText;
 
-		[Header("Settings")] [SerializeField] private string _waveFormat = "Wave {0}/{1}";
-		[SerializeField] private string _enemiesFormat = "Enemies: {0}";
+		[Header("Settings")] 
+		[SerializeField] private LocalizedString _waveFormat;
+		[SerializeField] private LocalizedString _enemiesFormat;
 		[SerializeField] private string _timerFormat = "{0:0}";
 		[SerializeField] private bool _showTimer = true;
 
@@ -47,6 +51,8 @@ namespace Game.Client.UI
 			EventBus.Instance.Subscribe<WaveStartedEvent>(OnWaveStarted);
 			EventBus.Instance.Subscribe<WaveCompletedEvent>(OnWaveCompleted);
 			EventBus.Instance.Subscribe<CountdownEvent>(OnCountdown);
+			
+			LocalizationSettings.SelectedLocaleChanged += OnSelectedLocaleChanged;
 		}
 
 		protected override void Unsubscribe()
@@ -56,6 +62,14 @@ namespace Game.Client.UI
 			EventBus.Instance.Unsubscribe<WaveStartedEvent>(OnWaveStarted);
 			EventBus.Instance.Unsubscribe<WaveCompletedEvent>(OnWaveCompleted);
 			EventBus.Instance.Unsubscribe<CountdownEvent>(OnCountdown);
+			
+			LocalizationSettings.SelectedLocaleChanged -= OnSelectedLocaleChanged;
+		}
+
+		private void OnSelectedLocaleChanged(Locale locale)
+		{
+			UpdateWaveInfo();
+			UpdateEnemiesCount(_waveManager.GetActiveEnemiesCount());
 		}
 
 		private void Update()
@@ -110,7 +124,7 @@ namespace Game.Client.UI
 			if (_waveNumberText != null)
 			{
 				_waveNumberText.text = string.Format(
-					_waveFormat,
+					LocalizationUtils.GetLocalizedString(_waveFormat).ToString(),
 					_waveManager.CurrentWaveNumber,
 					_waveManager.TotalWaves
 				);
@@ -123,7 +137,7 @@ namespace Game.Client.UI
 
 			if (_enemiesRemainingText != null)
 			{
-				_enemiesRemainingText.text = string.Format(_enemiesFormat, count);
+				_enemiesRemainingText.text = string.Format(LocalizationUtils.GetLocalizedString(_enemiesFormat).ToString(), count);
 			}
 		}
 

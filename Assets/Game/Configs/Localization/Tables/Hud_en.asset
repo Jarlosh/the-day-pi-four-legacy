@@ -26,6 +26,18 @@ MonoBehaviour:
     m_Localized: Shotgun
     m_Metadata:
       m_Items: []
+  - m_Id: 4199710031872
+    m_Localized: 'Enemies: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4199710031873
+    m_Localized: Wave {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4199714226176
+    m_Localized: 'Speed: '
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -23,15 +23,39 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 56673357824
-    m_Localized: Start Game
+    m_Localized: New Game
     m_Metadata:
       m_Items: []
   - m_Id: 304338620416
-    m_Localized: Exit
+    m_Localized: Quit
     m_Metadata:
       m_Items: []
   - m_Id: 10246999166976
     m_Localized: Loading...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1023496469184512
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1023496498544640
+    m_Localized: Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1023622063423488
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1031925086650368
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1032496883531776
+    m_Localized: Rus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1032496883531777
+    m_Localized: Eng
     m_Metadata:
       m_Items: []
   references:

@@ -23,6 +23,18 @@ MonoBehaviour:
     m_Key: Label_ShootMode_Shotgun
     m_Metadata:
       m_Items: []
+  - m_Id: 4199710031872
+    m_Key: Label_Enemies
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4199710031873
+    m_Key: Label_Wave_Number
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4199714226176
+    m_Key: Label_Speed
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
