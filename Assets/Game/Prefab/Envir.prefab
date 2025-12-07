@@ -1312,57 +1312,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7890859543837581563}
     m_Modifications:
-    - target: {fileID: 550131822796622024, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: -6830179342339113236, guid: 34d475239d9c5d947b44f25beb4ad4d8, type: 3}
-    - target: {fileID: 1954279024892785431, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-      propertyPath: fractureOptions.fragmentCount
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1954279024892785431, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-      propertyPath: fractureOptions.insideMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: 9e8d37352738b2d44860ed12280c36a1, type: 2}
-    - target: {fileID: 1954279024892785431, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-      propertyPath: triggerOptions.minimumCollisionForce
-      value: 9999
-      objectReference: {fileID: 0}
     - target: {fileID: 3217094861885811653, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
       propertyPath: m_Name
       value: Door_01
-      objectReference: {fileID: 0}
-    - target: {fileID: 3217094861885811653, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5814858229281041430, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-      propertyPath: m_Size.x
-      value: 4.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 5814858229281041430, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-      propertyPath: m_Size.y
-      value: 3.84
-      objectReference: {fileID: 0}
-    - target: {fileID: 5814858229281041430, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-      propertyPath: m_Size.z
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 5814858229281041430, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-      propertyPath: m_Center.y
-      value: 2.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6029023166676150265, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.6526
-      objectReference: {fileID: 0}
-    - target: {fileID: 6029023166676150265, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.0116546
-      objectReference: {fileID: 0}
-    - target: {fileID: 6029023166676150265, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2.78886
       objectReference: {fileID: 0}
     - target: {fileID: 6029023166676150265, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1370,7 +1322,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6029023166676150265, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.14
+      value: -0.11
       objectReference: {fileID: 0}
     - target: {fileID: 6029023166676150265, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1404,67 +1356,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7883743157516187162, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 9e8d37352738b2d44860ed12280c36a1, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3217094861885811653, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1696001210465260420}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
 --- !u!4 &337552703450264287 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6029023166676150265, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
   m_PrefabInstance: {fileID: 6270240784469267750}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8908459257259966179 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3217094861885811653, guid: edb33513e5c96424ab5fd8e3bfc80eb4, type: 3}
-  m_PrefabInstance: {fileID: 6270240784469267750}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1696001210465260420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8908459257259966179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 605444303d16d4544bb76342ce272af3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: RuntimeAssembly::Prefracture
-  triggerOptions:
-    triggerType: 0
-    minimumCollisionForce: 0
-    filterCollisionsByTag: 0
-    triggerAllowedTags: []
-    triggerKey: 0
-  fractureOptions:
-    fragmentCount: 10
-    xAxis: 1
-    yAxis: 1
-    zAxis: 1
-    detectFloatingFragments: 0
-    asynchronous: 0
-    insideMaterial: {fileID: 0}
-    textureScale: {x: 1, y: 1}
-    textureOffset: {x: 0, y: 0}
-  callbackOptions:
-    onFracture:
-      m_PersistentCalls:
-        m_Calls: []
-    onCompleted:
-      m_PersistentCalls:
-        m_Calls: []
-  prefractureOptions:
-    unfreezeAll: 1
-    saveFragmentsToDisk: 0
-    saveLocation: 
 --- !u!1001 &6321280125924092273
 PrefabInstance:
   m_ObjectHideFlags: 0
