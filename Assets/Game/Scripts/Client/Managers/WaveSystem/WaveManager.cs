@@ -184,10 +184,17 @@ namespace Game.Client
 
 			while (enemiesSpawned < waveData.MaxEnemiesInWave && !token.IsCancellationRequested)
 			{
+				if (_activeEnemies.Count >= waveData.MaxConcurrentEnemies)
+				{
+					await UniTask.Yield(token);
+					continue;
+				}
+
 				int spawnsThisFrame = 0;
 
 				while (spawnsThisFrame < waveData.MaxSpawnsPerFrame &&
 						enemiesSpawned < waveData.MaxEnemiesInWave &&
+						_activeEnemies.Count < waveData.MaxConcurrentEnemies &&
 						!token.IsCancellationRequested)
 				{
 					var enemyPrefab = waveData.EnemyPrefabs[UnityEngine.Random.Range(0, waveData.EnemyPrefabs.Count)];

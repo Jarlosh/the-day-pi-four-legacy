@@ -850,6 +850,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game.Client::Game.Client.StyleSystem
   _styleSettings: {fileID: 11400000, guid: ff5a9b0b9aa86ce42a76494666958238, type: 2}
+  _pointsPerVacuum: 1
+  _pointsPerSlide: 3
   _pointsPerHit: 10
   _pointsPerKill: 50
   _decayDelay: 3
@@ -4952,6 +4954,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2094806942808437846, guid: 7f8aa2bdaebde3c469c96d30503ec0a8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2761815319970248038, guid: 7f8aa2bdaebde3c469c96d30503ec0a8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4988,6 +4994,10 @@ PrefabInstance:
       propertyPath: <ResumeInputAction>k__BackingField
       value: 
       objectReference: {fileID: 463503168}
+    - target: {fileID: 3912404405258504897, guid: 7f8aa2bdaebde3c469c96d30503ec0a8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4485251948097539890, guid: 7f8aa2bdaebde3c469c96d30503ec0a8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

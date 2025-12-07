@@ -15,6 +15,10 @@ namespace Game.Client
 		[field:SerializeField]
 		[field:Tooltip("Максимальное количество противников в этой волне")]
 		public int MaxEnemiesInWave { get; private set; } = 10;
+		
+		[field:SerializeField]
+		[field:Tooltip("Максимальное количество одновременных врагов на арене")]
+		public int MaxConcurrentEnemies { get; private set; } = 5;
         
 		[field:Header("Spawn Settings")]
 		[field:SerializeField]
