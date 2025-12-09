@@ -4937,7 +4937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game.Client::Game.Client.UpgradePickup
   _upgradeType: 0
-  _healAmount: 10
+  _healAmount: 15
   _damageUpgrade: 1
   _shootForceUpgrade: 5
   _visualObject: {fileID: 6550284963342204835}

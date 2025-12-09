@@ -9,6 +9,12 @@ namespace Game.Client
 		[SerializeField] private AudioMixer _audioMixer;
 		[SerializeField] private Slider _volumeSlider;
 
+		[SerializeField] private float _minVolume = -60f;
+		[SerializeField] private float _maxVolume = 5f;
+		
+		[SerializeField][Range(0.1f, 5f)]
+		private float _exponent = 3f;
+        
 		private const string VolumeKey = "MasterVolume";
 
 		private void Start()
@@ -21,8 +27,9 @@ namespace Game.Client
 		public void SetVolume(float sliderValue)
 		{
 			PlayerPrefs.SetFloat(VolumeKey, sliderValue);
-
-			var volumeValue = Mathf.Lerp(-80f, 0, sliderValue);
+			var range = _maxVolume - _minVolume;
+			var exponentialFactor = Mathf.Pow(sliderValue, _exponent);
+			var volumeValue = _minVolume + range * exponentialFactor;
 
 			_audioMixer.SetFloat(VolumeKey, volumeValue);
 		}
