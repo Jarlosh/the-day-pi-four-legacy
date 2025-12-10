@@ -5013,7 +5013,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game.Client::Game.Client.FlyingEnemy
   _health: {fileID: 1629865840177198970}
-  _maxHealth: 50
+  _maxHealth: 25
   _spawnAnimation: {fileID: 0}
   _despawnAnimation: {fileID: 0}
   _lookTarget: {fileID: 0}
