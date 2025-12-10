@@ -4,6 +4,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Game.Client.App;
+using Game.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,8 @@ namespace Game.Client
 		{
 			Cursor.lockState = CursorLockMode.Confined;
 			Cursor.visible = true;
+
+			ServiceLocator.Get<MusicManager>().ChangeState(GameMusicState.StateMenu);
 		}
 
 		public async void OnStartGameButton()
