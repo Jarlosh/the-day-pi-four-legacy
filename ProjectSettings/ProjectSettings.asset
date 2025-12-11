@@ -143,7 +143,7 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
-  bundleVersion: 1.0.2
+  bundleVersion: 1.0.4
   preloadedAssets:
   - {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   - {fileID: 11400000, guid: 6d969383fd8241840bd6fc9cb21df5a9, type: 2}
@@ -967,11 +967,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 0c35f4fd-f32f-4f5c-97d7-ec0d42da65e9
+  cloudProjectId: f4642091-c753-4de9-9f3d-cefd09530d15
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: pi-fourh
-  organizationId: jarlo
+  projectName: Suck n Shoot
+  organizationId: korveen-as-publisher
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

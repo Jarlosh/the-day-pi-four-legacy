@@ -1,3 +1,4 @@
+using Game.Client.App.Telemetry;
 using Game.Client.UI;
 using Game.Core;
 using Game.Shared.Singletons;
@@ -17,6 +18,8 @@ namespace Game.Client.App
         [SerializeField] private TimeService _timeService;
         [SerializeField] private MusicManager _musicManager;
 
+        private UnityAnalyticsService _analyticsService;
+        
         [RuntimeInitializeOnLoadMethod]
         private static void OnLoadMethod()
         {
@@ -29,12 +32,16 @@ namespace Game.Client.App
             ServiceLocator.Register<ILocaleSelectorService>(_localeSelectorService);
             ServiceLocator.Register<ITimeService>(_timeService);
             ServiceLocator.Register(_musicManager);
+            
+            _analyticsService = ServiceLocator.Register(new UnityAnalyticsService());
 
             Application.targetFrameRate = 120;
         }
 
         protected override void OnRelease()
         {
+            _analyticsService.Dispose();
+            
             ServiceLocator.Clear();
         }
         

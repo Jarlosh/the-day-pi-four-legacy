@@ -12,11 +12,14 @@ namespace Game.Core
 			_services[typeof(TContract)] = service;
 		}
 		
-		public static void Register<T>(T service)
+		public static T Register<T>(T service)
 		{
 			var type = typeof(T);
 			_services[type] = service;
+
+			return service;
 		}
+		
 
 		public static T Get<T>()
 		{

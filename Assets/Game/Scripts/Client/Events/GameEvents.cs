@@ -74,7 +74,7 @@
 	{
 	}
 
-	public record PickUpUpgrade()
+	public record PickUpUpgrade(UpgradeType Type)
 	{
 	}
 	

@@ -162,7 +162,7 @@ namespace Game.Client
 					break;
 			}
 			
-			EventBus.Instance.Publish(new PickUpUpgrade());
+			EventBus.Instance.Publish(new PickUpUpgrade(_upgradeType));
 		}
 	}
 }
