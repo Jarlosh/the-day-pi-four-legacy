@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game.Client::Game.Client.GroundEnemy
   _health: {fileID: 8774109970526242644}
-  _maxHealth: 50
+  _maxHealth: 40
   _spawnAnimation: {fileID: 6483728736647091289}
   _despawnAnimation: {fileID: 5858767134963984341}
   _lookTarget: {fileID: 0}

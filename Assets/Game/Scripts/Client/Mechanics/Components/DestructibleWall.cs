@@ -29,6 +29,14 @@ namespace Game.Client
 			}
 		}
 
+		private void OnDestroy()
+		{
+			foreach (var fragment in _fragments)
+			{
+				fragment.onFractureCompleted.RemoveListener(DestroyWall);
+			}
+		}
+
 		private void DestroyWall()
 		{
 			if (_destroyed)
